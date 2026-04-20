@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<link rel="stylesheet" href="style.css">
+
+<head>
+  <meta charset="UTF-8">
+  <title>App de Alimentos</title>
+</head>
+<body>
+
+  <h1>🍎 Lista de Alimentos</h1>
+
+  <input type="text" id="busca" placeholder="Buscar alimento...">
+  <button onclick="buscar()">Buscar</button>
+
+  <ul id="lista"></ul>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
