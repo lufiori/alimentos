@@ -11,26 +11,41 @@
 
 <div class="container">
 
-  <h1>🍎 Cadastro de Alimentos</h1>
+  <h1>🍎 App de Alimentos</h1>
 
   <!-- FORMULÁRIO -->
   <h2>Cadastro</h2>
 
-  <label>Nome do alimento:</label>
-  <input type="text" id="nome" placeholder="Ex: Banana">
+  <label>Nome:</label>
+  <input type="text" id="nome">
 
-  <label>Calorias (por porção):</label>
-  <input type="number" id="calorias" placeholder="Ex: 89">
+  <label>Categoria:</label>
+  <input type="text" id="categoria">
 
-  <label>Proteína (g):</label>
-  <input type="number" id="proteina" placeholder="Ex: 1.1">
+  <label>Porção:</label>
+  <input type="text" id="porcao">
 
-  <label>Gordura (g):</label>
-  <input type="number" id="gordura" placeholder="Ex: 0.3">
+  <label>Calorias:</label>
+  <input type="number" id="calorias">
+
+  <label>Carboidrato:</label>
+  <input type="number" id="carboidrato">
+
+  <label>Proteína:</label>
+  <input type="number" id="proteina">
+
+  <label>Gordura:</label>
+  <input type="number" id="gordura">
+
+  <label>Fibra:</label>
+  <input type="number" id="fibra">
+
+  <label>Colesterol:</label>
+  <input type="number" id="colesterol">
 
   <label>Classificação:</label>
   <select id="classificacao">
-    <option value="bom">🟢 Bom (saudável)</option>
+    <option value="bom">🟢 Bom</option>
     <option value="moderado">🟡 Moderado</option>
     <option value="evitar">🔴 Evitar</option>
   </select>
@@ -43,11 +58,9 @@
 
   <p id="status"></p>
 
-
   <!-- BUSCA -->
-  <h2>Lista de Alimentos</h2>
-
-  <input type="text" id="busca" placeholder="Buscar alimento..." onkeyup="buscar()">
+  <h2>Lista</h2>
+  <input type="text" id="busca" placeholder="Buscar..." onkeyup="buscar()">
 
   <!-- TABELA -->
   <table>
@@ -55,10 +68,14 @@
       <tr>
         <th>Status</th>
         <th>Nome</th>
-        <th>Calorias</th>
-        <th>Proteína</th>
-        <th>Gordura</th>
-        <th>Classificação</th>
+        <th>Categoria</th>
+        <th>Cal</th>
+        <th>Carb</th>
+        <th>Prot</th>
+        <th>Gord</th>
+        <th>Fibra</th>
+        <th>Colest</th>
+        <th>Porção</th>
       </tr>
     </thead>
     <tbody id="lista"></tbody>
@@ -66,7 +83,6 @@
 
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
