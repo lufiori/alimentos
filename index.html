@@ -24,7 +24,7 @@
 <p id="status"></p>
 
   
-  <h2>🍎 Lista </h2>
+  <h2>Lista</h2>
 
   <input type="text" id="busca" placeholder="Buscar alimento...">
   <button onclick="buscar()">Buscar</button>
@@ -35,5 +35,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="app.js"></script>
+
+  <select id="classificacao">
+    <option value="bom">🟢 Bom</option>
+    <option value="moderado">🟡 Moderado</option>
+    <option value="evitar">🔴 Evitar</option>
+  </select>
 </body>
 </html>
