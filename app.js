@@ -64,5 +64,28 @@ async function buscar() {
   });
 }
 
+async function adicionarExemplo() {
+  try {
+    await db.collection("alimentos").add({
+      nome: "Banana",
+      categoria: "Frutas",
+      calorias: 89,
+      proteina: 1.1,
+      carboidrato: 23,
+      gordura: 0.3,
+      fibra: 2.6,
+      colesterol: 0,
+      porcao: "100g",
+      classificacao: "bom"
+    });
+
+    alert("🔥 Funcionou! Alimento adicionado!");
+    carregarAlimentos(); // atualiza a lista
+  } catch (erro) {
+    console.error(erro);
+    alert("❌ Deu erro (abre o console F12)");
+  }
+}
+
 // Carregar ao abrir
 carregarAlimentos();
