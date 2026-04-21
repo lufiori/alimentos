@@ -26,11 +26,23 @@
   
   <h2>Lista</h2>
 
+  <input type="text" id="busca" placeholder="Buscar alimento..." onkeyup="buscar()">
+
+  
   <input type="text" id="busca" placeholder="Buscar alimento...">
   <button onclick="buscar()">Buscar</button>
     
   <ul id="lista"></ul>
 
+
+  <h2>Consumo do Dia</h2>
+
+<button onclick="adicionarAoDia()">Adicionar ao dia</button>
+
+<p>Calorias: <span id="totalCalorias">0</span></p>
+<p>Gordura: <span id="totalGordura">0</span></p>
+
+  
   <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
