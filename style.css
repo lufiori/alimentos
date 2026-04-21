@@ -1,17 +1,112 @@
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
   padding: 20px;
 }
 
-li {
-  margin-bottom: 10px;
+h1 {
+  text-align: center;
+  color: #2c3e50;
 }
 
-<style>
-  .bolinha {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-</style>
+h2 {
+  margin-top: 30px;
+  color: #34495e;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Inputs */
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Botões */
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+button:nth-child(1) {
+  background: #2ecc71;
+  color: white;
+}
+
+button:nth-child(2) {
+  background: #f39c12;
+  color: white;
+}
+
+button:nth-child(3) {
+  background: #e74c3c;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Tabela */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 15px;
+  background: white;
+}
+
+th {
+  background: #2c3e50;
+  color: white;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+tr:hover {
+  background: #dfe6e9;
+  cursor: pointer;
+}
+
+/* Bolinha */
+.bolinha {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Consumo */
+#totalCalorias, #totalGordura {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Status */
+#status {
+  font-weight: bold;
+  margin-top: 10px;
+}
