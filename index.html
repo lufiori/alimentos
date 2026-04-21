@@ -1,84 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<link rel="stylesheet" href="style.css">
 
 <head>
   <meta charset="UTF-8">
   <title>App de Alimentos</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>🍎 Cadastro de Alimentos 🍎</h1>
+<div class="container">
 
-<label>Nome do alimento:</label><br>
-<input type="text" id="nome" placeholder="Ex: Banana"><br><br>
+  <h1>🍎 Cadastro de Alimentos</h1>
 
-<label>Calorias (por porção):</label><br>
-<input type="number" id="calorias" placeholder="Ex: 89"><br><br>
+  <!-- FORMULÁRIO -->
+  <h2>Cadastro</h2>
 
-<label>Proteína (g):</label><br>
-<input type="number" id="proteina" placeholder="Ex: 1.1"><br><br>
+  <label>Nome do alimento:</label>
+  <input type="text" id="nome" placeholder="Ex: Banana">
 
-<label>Gordura (g):</label><br>
-<input type="number" id="gordura" placeholder="Ex: 0.3"><br><br>
+  <label>Calorias (por porção):</label>
+  <input type="number" id="calorias" placeholder="Ex: 89">
 
-<label>Classificação:</label><br>
-<select id="classificacao">
-  <option value="bom">🟢 Bom (saudável)</option>
-  <option value="moderado">🟡 Moderado</option>
-  <option value="evitar">🔴 Evitar</option>
-</select><br><br>
+  <label>Proteína (g):</label>
+  <input type="number" id="proteina" placeholder="Ex: 1.1">
 
-<button onclick="incluir()">Incluir</button>
-<button onclick="alterar()">Alterar</button>
-<button onclick="excluir()">Excluir</button>
+  <label>Gordura (g):</label>
+  <input type="number" id="gordura" placeholder="Ex: 0.3">
 
+  <label>Classificação:</label>
+  <select id="classificacao">
+    <option value="bom">🟢 Bom (saudável)</option>
+    <option value="moderado">🟡 Moderado</option>
+    <option value="evitar">🔴 Evitar</option>
+  </select>
 
-<br><br>
+  <br>
 
+  <button onclick="incluir()">Incluir</button>
+  <button onclick="alterar()">Alterar</button>
+  <button onclick="excluir()">Excluir</button>
 
+  <p id="status"></p>
 
-<p id="status"></p>
+  <!-- CONSUMO -->
+  <h2>Consumo do Dia</h2>
 
-<h2>Consumo do Dia</h2>
+  <button onclick="adicionarAoDia()">Adicionar ao dia</button>
 
-<button onclick="adicionarAoDia()">Adicionar ao dia</button>
+  <p>Calorias: <span id="totalCalorias">0</span></p>
+  <p>Gordura: <span id="totalGordura">0</span></p>
 
-<p>Calorias: <span id="totalCalorias">0</span></p>
-<p>Gordura: <span id="totalGordura">0</span></p>
-
-<select id="classificacao">
-  <option value="bom">🟢 Bom</option>
-  <option value="moderado">🟡 Moderado</option>
-  <option value="evitar">🔴 Evitar</option>
-</select>
-  
-  
-  <h2>Lista</h2>
+  <!-- BUSCA -->
+  <h2>Lista de Alimentos</h2>
 
   <input type="text" id="busca" placeholder="Buscar alimento..." onkeyup="buscar()">
 
-   
-      <table border="1" width="100%">
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>Nome</th>
-            <th>Calorias</th>
-            <th>Proteína</th>
-            <th>Gordura</th>
-          </tr>
-        </thead>
-        <tbody id="lista"></tbody>
-      </table>
+  <!-- TABELA -->
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Nome</th>
+        <th>Calorias</th>
+        <th>Proteína</th>
+        <th>Gordura</th>
+        <th>Classificação</th>
+      </tr>
+    </thead>
+    <tbody id="lista"></tbody>
+  </table>
 
+</div>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-  
-  <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="app.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
