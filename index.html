@@ -29,6 +29,12 @@
 
 <p>Calorias: <span id="totalCalorias">0</span></p>
 <p>Gordura: <span id="totalGordura">0</span></p>
+
+<select id="classificacao">
+  <option value="bom">🟢 Bom</option>
+  <option value="moderado">🟡 Moderado</option>
+  <option value="evitar">🔴 Evitar</option>
+</select>
   
   
   <h2>Lista</h2>
@@ -46,10 +52,5 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="app.js"></script>
 
-  <select id="classificacao">
-    <option value="bom">🟢 Bom</option>
-    <option value="moderado">🟡 Moderado</option>
-    <option value="evitar">🔴 Evitar</option>
-  </select>
 </body>
 </html>
