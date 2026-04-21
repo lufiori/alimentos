@@ -154,3 +154,59 @@ function limparCampos() {
 }
 
 
+classificacao: document.getElementById("classificacao").value
+
+document.getElementById("classificacao").value = item.classificacao;
+
+async function buscar() {
+  const texto = document.getElementById("busca").value.toLowerCase();
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  const snapshot = await db.collection("alimentos").get();
+
+  snapshot.forEach(doc => {
+    const item = doc.data();
+
+    if (item.nome.toLowerCase().includes(texto)) {
+
+      let cor = "black";
+      if (item.classificacao === "bom") cor = "green";
+      if (item.classificacao === "moderado") cor = "orange";
+      if (item.classificacao === "evitar") cor = "red";
+
+      const li = document.createElement("li");
+
+      li.innerHTML = `
+        <span style="color:${cor}">
+          <strong>${item.nome}</strong> - ${item.calorias} kcal
+        </span>
+      `;
+
+      li.onclick = () => selecionar(doc.id, item);
+
+      lista.appendChild(li);
+    }
+  });
+}
+
+let totalCalorias = 0;
+let totalGordura = 0;
+
+function adicionarAoDia() {
+  if (!idSelecionado) {
+    alert("Selecione um alimento!");
+    return;
+  }
+
+  const calorias = Number(document.getElementById("calorias").value);
+  const gordura = Number(document.getElementById("gordura").value);
+
+  totalCalorias += calorias;
+  totalGordura += gordura;
+
+  document.getElementById("totalCalorias").innerText = totalCalorias;
+  document.getElementById("totalGordura").innerText = totalGordura;
+
+  verificarAlerta();
+}
