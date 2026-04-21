@@ -16,14 +16,12 @@ const db = firebase.firestore();
 
 let idSelecionado = null;
 
-// 🔥 CARREGAR (ordenado)
+// 🔥 CARREGAR
 async function carregarAlimentos() {
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const snapshot = await db.collection("alimentos")
-    .orderBy("nome")
-    .get();
+  const snapshot = await db.collection("alimentos").orderBy("nome").get();
 
   snapshot.forEach(doc => {
     const item = doc.data();
@@ -38,10 +36,14 @@ async function carregarAlimentos() {
     tr.innerHTML = `
       <td><span class="bolinha" style="background:${cor}"></span></td>
       <td>${item.nome}</td>
+      <td>${item.categoria}</td>
       <td>${item.calorias}</td>
+      <td>${item.carboidrato}</td>
       <td>${item.proteina}</td>
       <td>${item.gordura}</td>
-      <td>${item.classificacao || "-"}</td>
+      <td>${item.fibra}</td>
+      <td>${item.colesterol}</td>
+      <td>${item.porcao}</td>
     `;
 
     tr.onclick = () => selecionar(doc.id, item);
@@ -50,7 +52,7 @@ async function carregarAlimentos() {
   });
 }
 
-// 🔍 BUSCAR (corrigido)
+// 🔍 BUSCAR
 async function buscar() {
   const texto = document.getElementById("busca").value.toLowerCase();
   const lista = document.getElementById("lista");
@@ -62,21 +64,19 @@ async function buscar() {
     const item = doc.data();
 
     if (item.nome.toLowerCase().includes(texto)) {
-
-      let cor = "gray";
-      if (item.classificacao === "bom") cor = "green";
-      if (item.classificacao === "moderado") cor = "orange";
-      if (item.classificacao === "evitar") cor = "red";
-
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
-        <td><span class="bolinha" style="background:${cor}"></span></td>
+        <td></td>
         <td>${item.nome}</td>
+        <td>${item.categoria}</td>
         <td>${item.calorias}</td>
+        <td>${item.carboidrato}</td>
         <td>${item.proteina}</td>
         <td>${item.gordura}</td>
-        <td>${item.classificacao || "-"}</td>
+        <td>${item.fibra}</td>
+        <td>${item.colesterol}</td>
+        <td>${item.porcao}</td>
       `;
 
       tr.onclick = () => selecionar(doc.id, item);
@@ -88,14 +88,7 @@ async function buscar() {
 
 // ➕ INCLUIR
 async function incluir() {
-  const dados = {
-    nome: document.getElementById("nome").value,
-    calorias: Number(document.getElementById("calorias").value),
-    proteina: Number(document.getElementById("proteina").value),
-    gordura: Number(document.getElementById("gordura").value),
-    classificacao: document.getElementById("classificacao").value || "moderado"
-  };
-
+  const dados = pegarDados();
   await db.collection("alimentos").add(dados);
 
   document.getElementById("status").innerText = "✅ Incluído!";
@@ -105,18 +98,9 @@ async function incluir() {
 
 // ✏️ ALTERAR
 async function alterar() {
-  if (!idSelecionado) {
-    alert("Selecione um item!");
-    return;
-  }
+  if (!idSelecionado) return alert("Selecione um item");
 
-  await db.collection("alimentos").doc(idSelecionado).update({
-    nome: document.getElementById("nome").value,
-    calorias: Number(document.getElementById("calorias").value),
-    proteina: Number(document.getElementById("proteina").value),
-    gordura: Number(document.getElementById("gordura").value),
-    classificacao: document.getElementById("classificacao").value
-  });
+  await db.collection("alimentos").doc(idSelecionado).update(pegarDados());
 
   document.getElementById("status").innerText = "✏️ Alterado!";
   limparCampos();
@@ -125,10 +109,7 @@ async function alterar() {
 
 // 🗑️ EXCLUIR
 async function excluir() {
-  if (!idSelecionado) {
-    alert("Selecione um item!");
-    return;
-  }
+  if (!idSelecionado) return alert("Selecione um item");
 
   await db.collection("alimentos").doc(idSelecionado).delete();
 
@@ -137,25 +118,42 @@ async function excluir() {
   carregarAlimentos();
 }
 
+// 📥 pegar dados
+function pegarDados() {
+  return {
+    nome: nome.value,
+    categoria: categoria.value,
+    porcao: porcao.value,
+    calorias: Number(calorias.value),
+    carboidrato: Number(carboidrato.value),
+    proteina: Number(proteina.value),
+    gordura: Number(gordura.value),
+    fibra: Number(fibra.value),
+    colesterol: Number(colesterol.value),
+    classificacao: classificacao.value || "moderado"
+  };
+}
+
 // 👉 selecionar
 function selecionar(id, item) {
   idSelecionado = id;
 
-  document.getElementById("nome").value = item.nome;
-  document.getElementById("calorias").value = item.calorias;
-  document.getElementById("proteina").value = item.proteina;
-  document.getElementById("gordura").value = item.gordura;
-  document.getElementById("classificacao").value = item.classificacao || "moderado";
+  nome.value = item.nome;
+  categoria.value = item.categoria;
+  porcao.value = item.porcao;
+  calorias.value = item.calorias;
+  carboidrato.value = item.carboidrato;
+  proteina.value = item.proteina;
+  gordura.value = item.gordura;
+  fibra.value = item.fibra;
+  colesterol.value = item.colesterol;
+  classificacao.value = item.classificacao || "moderado";
 }
 
 // 👉 limpar
 function limparCampos() {
   idSelecionado = null;
-
-  document.getElementById("nome").value = "";
-  document.getElementById("calorias").value = "";
-  document.getElementById("proteina").value = "";
-  document.getElementById("gordura").value = "";
+  document.querySelectorAll("input").forEach(i => i.value = "");
 }
 
 // 🚀 iniciar
