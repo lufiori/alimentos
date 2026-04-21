@@ -8,12 +8,29 @@
 </head>
 <body>
 
+<h2>Cadastro de Alimento</h2>
+
+<input type="text" id="nome" placeholder="Nome">
+<input type="number" id="calorias" placeholder="Calorias">
+<input type="number" id="proteina" placeholder="Proteína">
+<input type="number" id="gordura" placeholder="Gordura">
+
+<br><br>
+
+<button onclick="incluir()">Incluir</button>
+<button onclick="alterar()">Alterar</button>
+<button onclick="excluir()">Excluir</button>
+
+<p id="status"></p>
+
+  
   <h1>🍎 Lista de Alimentos</h1>
 
   <input type="text" id="busca" placeholder="Buscar alimento...">
   <button onclick="buscar()">Buscar</button>
   <button onclick="adicionarExemplo()">Adicionar alimento teste</button>
 
+  
   <ul id="lista"></ul>
 
   <!-- Firebase -->
