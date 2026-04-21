@@ -27,19 +27,25 @@ async function carregarAlimentos() {
   snapshot.forEach(doc => {
     const item = doc.data();
 
-      const li = document.createElement("li");
-      
-      li.innerHTML = `
+    let cor = "black";
+
+    if (item.classificacao === "bom") cor = "green";
+    if (item.classificacao === "moderado") cor = "orange";
+    if (item.classificacao === "evitar") cor = "red";
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <span style="color:${cor}">
         <strong>${item.nome}</strong> - ${item.calorias} kcal
-      `;
-      
-      li.onclick = () => selecionar(doc.id, item);
+      </span>
+    `;
+
+    li.onclick = () => selecionar(doc.id, item);
 
     lista.appendChild(li);
   });
 }
-
-
 
 
 
