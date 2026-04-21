@@ -22,9 +22,7 @@ async function carregarAlimentos() {
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const snapshot = await db.collection("alimentos")
-    .orderBy("nome")
-    .get();
+  const snapshot = await db.collection("alimentos").orderBy("nome").get();
 
   snapshot.forEach(doc => {
     const item = doc.data();
