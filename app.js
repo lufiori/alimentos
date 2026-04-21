@@ -1,46 +1,40 @@
-// 🔥 COLE AQUI SUA CONFIG DO FIREBASE
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyC9qmb14pgL6lb1ows_RYK_PAyiowocsq0",
+  apiKey: "SUA CHAVE",
   authDomain: "receitas-da-lu-44637.firebaseapp.com",
   projectId: "receitas-da-lu-44637",
-  storageBucket: "receitas-da-lu-44637.firebasestorage.app",
-  messagingSenderId: "860073650852",
-  appId: "1:860073650852:web:db47e9b82dfccc2e859431",
-  measurementId: "G-PPTQ4Y39FZ"
 };
 
-
-// Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+let idSelecionado = null;
 
-// 🔎 Buscar alimentos
+// 🔥 CARREGAR (ordenado)
 async function carregarAlimentos() {
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const snapshot = await db.collection("alimentos").get();
+  const snapshot = await db.collection("alimentos")
+    .orderBy("nome")
+    .get();
 
   snapshot.forEach(doc => {
     const item = doc.data();
 
     let cor = "gray";
-
     if (item.classificacao === "bom") cor = "green";
     if (item.classificacao === "moderado") cor = "orange";
     if (item.classificacao === "evitar") cor = "red";
 
     const tr = document.createElement("tr");
-    
+
     tr.innerHTML = `
       <td><span class="bolinha" style="background:${cor}"></span></td>
       <td>${item.nome}</td>
       <td>${item.calorias}</td>
       <td>${item.proteina}</td>
       <td>${item.gordura}</td>
+      <td>${item.classificacao || "-"}</td>
     `;
 
     tr.onclick = () => selecionar(doc.id, item);
@@ -49,65 +43,63 @@ async function carregarAlimentos() {
   });
 }
 
-
-
-// 🔍 Função de busca simples
+// 🔍 BUSCAR (corrigido)
 async function buscar() {
   const texto = document.getElementById("busca").value.toLowerCase();
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const innershot = await db.collection("alimentos").get();
+  const snapshot = await db.collection("alimentos").get();
 
   snapshot.forEach(doc => {
     const item = doc.data();
 
     if (item.nome.toLowerCase().includes(texto)) {
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <strong>${item.nome}</strong><br>
-        Calorias: ${item.calorias} kcal<br>
-        Proteína: ${item.proteina} g<br>
-        Gordura: ${item.gordura} g<br>
-        -------------------------
+
+      let cor = "gray";
+      if (item.classificacao === "bom") cor = "green";
+      if (item.classificacao === "moderado") cor = "orange";
+      if (item.classificacao === "evitar") cor = "red";
+
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td><span class="bolinha" style="background:${cor}"></span></td>
+        <td>${item.nome}</td>
+        <td>${item.calorias}</td>
+        <td>${item.proteina}</td>
+        <td>${item.gordura}</td>
+        <td>${item.classificacao || "-"}</td>
       `;
-      lista.appendChild(li);
+
+      tr.onclick = () => selecionar(doc.id, item);
+
+      lista.appendChild(tr);
     }
   });
 }
 
-
-// Carregar ao abrir
-carregarAlimentos();
-
-
-
-
-let idSelecionado = null;
-
-// 👉 INCLUIR
+// ➕ INCLUIR
 async function incluir() {
-  const nome = document.getElementById("nome").value;
-
   const dados = {
-    nome: nome,
+    nome: document.getElementById("nome").value,
     calorias: Number(document.getElementById("calorias").value),
     proteina: Number(document.getElementById("proteina").value),
-    gordura: Number(document.getElementById("gordura").value)
+    gordura: Number(document.getElementById("gordura").value),
     classificacao: document.getElementById("classificacao").value || "moderado"
   };
 
-  const doc = await db.collection("alimentos").add(dados);
+  await db.collection("alimentos").add(dados);
 
   document.getElementById("status").innerText = "✅ Incluído!";
   limparCampos();
   carregarAlimentos();
 }
 
-// 👉 ALTERAR
+// ✏️ ALTERAR
 async function alterar() {
   if (!idSelecionado) {
-    alert("Selecione um item primeiro!");
+    alert("Selecione um item!");
     return;
   }
 
@@ -115,7 +107,8 @@ async function alterar() {
     nome: document.getElementById("nome").value,
     calorias: Number(document.getElementById("calorias").value),
     proteina: Number(document.getElementById("proteina").value),
-    gordura: Number(document.getElementById("gordura").value)
+    gordura: Number(document.getElementById("gordura").value),
+    classificacao: document.getElementById("classificacao").value
   });
 
   document.getElementById("status").innerText = "✏️ Alterado!";
@@ -123,10 +116,10 @@ async function alterar() {
   carregarAlimentos();
 }
 
-// 👉 EXCLUIR
+// 🗑️ EXCLUIR
 async function excluir() {
   if (!idSelecionado) {
-    alert("Selecione um item primeiro!");
+    alert("Selecione um item!");
     return;
   }
 
@@ -137,7 +130,7 @@ async function excluir() {
   carregarAlimentos();
 }
 
-// 👉 selecionar item da lista
+// 👉 selecionar
 function selecionar(id, item) {
   idSelecionado = id;
 
@@ -145,71 +138,18 @@ function selecionar(id, item) {
   document.getElementById("calorias").value = item.calorias;
   document.getElementById("proteina").value = item.proteina;
   document.getElementById("gordura").value = item.gordura;
+  document.getElementById("classificacao").value = item.classificacao || "moderado";
 }
 
-// 👉 limpar campos
+// 👉 limpar
 function limparCampos() {
   idSelecionado = null;
+
   document.getElementById("nome").value = "";
   document.getElementById("calorias").value = "";
   document.getElementById("proteina").value = "";
   document.getElementById("gordura").value = "";
 }
 
-
-classificacao: document.getElementById("classificacao").value
-
-document.getElementById("classificacao").value = item.classificacao;
-
-async function buscar() {
-  const texto = document.getElementById("busca").value.toLowerCase();
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
-
-  const snapshot = await db.collection("alimentos").get();
-
-  snapshot.forEach(doc => {
-    const item = doc.data();
-
-    if (item.nome.toLowerCase().includes(texto)) {
-
-      let cor = "black";
-      if (item.classificacao === "bom") cor = "green";
-      if (item.classificacao === "moderado") cor = "orange";
-      if (item.classificacao === "evitar") cor = "red";
-
-      const li = document.createElement("li");
-
-      li.innerHTML = `
-        <span style="color:${cor}">
-          <strong>${item.nome}</strong> - ${item.calorias} kcal
-        </span>
-      `;
-
-      li.onclick = () => selecionar(doc.id, item);
-
-      lista.appendChild(li);
-    }
-  });
-}
-
-let totalCalorias = 0;
-let totalGordura = 0;
-
-function adicionarAoDia() {
-  if (!idSelecionado) {
-    alert("Selecione um alimento!");
-    return;
-  }
-
-  const calorias = Number(document.getElementById("calorias").value);
-  const gordura = Number(document.getElementById("gordura").value);
-
-  totalCalorias += calorias;
-  totalGordura += gordura;
-
-  document.getElementById("totalCalorias").innerText = totalCalorias;
-  document.getElementById("totalGordura").innerText = totalGordura;
-
-  verificarAlerta();
-}
+// 🚀 iniciar
+carregarAlimentos();
