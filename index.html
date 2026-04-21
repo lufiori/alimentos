@@ -10,10 +10,30 @@
 
 <h1>🍎 Cadastro de Alimentos 🍎</h1>
 
-<input type="text" id="nome" placeholder="Nome">
-<input type="number" id="calorias" placeholder="Calorias">
-<input type="number" id="proteina" placeholder="Proteína">
-<input type="number" id="gordura" placeholder="Gordura">
+<label>Nome do alimento:</label><br>
+<input type="text" id="nome" placeholder="Ex: Banana"><br><br>
+
+<label>Calorias (por porção):</label><br>
+<input type="number" id="calorias" placeholder="Ex: 89"><br><br>
+
+<label>Proteína (g):</label><br>
+<input type="number" id="proteina" placeholder="Ex: 1.1"><br><br>
+
+<label>Gordura (g):</label><br>
+<input type="number" id="gordura" placeholder="Ex: 0.3"><br><br>
+
+<label>Classificação:</label><br>
+<select id="classificacao">
+  <option value="bom">🟢 Bom (saudável)</option>
+  <option value="moderado">🟡 Moderado</option>
+  <option value="evitar">🔴 Evitar</option>
+</select><br><br>
+
+<button onclick="incluir()">Incluir</button>
+<button onclick="alterar()">Alterar</button>
+<button onclick="excluir()">Excluir</button>
+
+  
 
 <br><br>
 
