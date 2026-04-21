@@ -64,6 +64,10 @@ async function buscar() {
   });
 }
 
+
+// Carregar ao abrir
+carregarAlimentos();
+
 async function adicionarExemplo() {
   try {
     await db.collection("alimentos").add({
@@ -87,5 +91,3 @@ async function adicionarExemplo() {
   }
 }
 
-// Carregar ao abrir
-carregarAlimentos();
