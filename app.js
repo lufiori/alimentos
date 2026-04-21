@@ -36,14 +36,14 @@ async function carregarAlimentos() {
     if (item.classificacao === "evitar") cor = "red";
 
     const tr = document.createElement("tr");
-
+    
     tr.innerHTML = `
       <td><span class="bolinha" style="background:${cor}"></span></td>
       <td>${item.nome}</td>
       <td>${item.calorias}</td>
       <td>${item.proteina}</td>
       <td>${item.gordura}</td>
-      <td>${item.classificacao || "-"}</td>
+// <td>${item.classificacao || "-"}</td>
     `;
 
     tr.onclick = () => selecionar(doc.id, item);
