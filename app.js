@@ -1,7 +1,14 @@
+// 🔥 COLE AQUI SUA CONFIG DO FIREBASE
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "SUA CHAVE",
+  apiKey: "AIzaSyC9qmb14pgL6lb1ows_RYK_PAyiowocsq0",
   authDomain: "receitas-da-lu-44637.firebaseapp.com",
   projectId: "receitas-da-lu-44637",
+  storageBucket: "receitas-da-lu-44637.firebasestorage.app",
+  messagingSenderId: "860073650852",
+  appId: "1:860073650852:web:db47e9b82dfccc2e859431",
+  measurementId: "G-PPTQ4Y39FZ"
 };
 
 firebase.initializeApp(firebaseConfig);
