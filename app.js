@@ -22,7 +22,9 @@ async function carregarAlimentos() {
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const snapshot = await db.collection("alimentos").get();
+  const snapshot = await db.collection("alimentos")
+  .orderBy("nome")
+  .get();
 
   snapshot.forEach(doc => {
     const item = doc.data();
@@ -41,7 +43,6 @@ async function carregarAlimentos() {
       <td>${item.calorias}</td>
       <td>${item.proteina}</td>
       <td>${item.gordura}</td>
-// <td>${item.classificacao || "-"}</td>
     `;
 
     tr.onclick = () => selecionar(doc.id, item);
