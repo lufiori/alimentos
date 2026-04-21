@@ -71,7 +71,7 @@ carregarAlimentos();
 async function adicionarExemplo() {
   try {
     await db.collection("alimentos").add({
-      nome: "Banana",
+      nome: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
       categoria: "Frutas",
       calorias: 89,
       proteina: 1.1,
