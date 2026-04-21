@@ -6,3 +6,12 @@ body {
 li {
   margin-bottom: 10px;
 }
+
+<style>
+  .bolinha {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+</style>
