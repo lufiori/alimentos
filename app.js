@@ -26,18 +26,21 @@ async function carregarAlimentos() {
   snapshot.forEach(doc => {
     const item = doc.data();
 
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${item.nome}</strong><br>
-      Calorias: ${item.calorias} kcal<br>
-      Proteína: ${item.proteina} g<br>
-      Gordura: ${item.gordura} g<br>
-      -------------------------
-    `;
+      const li = document.createElement("li");
+      
+      li.innerHTML = `
+        <strong>${item.nome}</strong> - ${item.calorias} kcal
+      `;
+      
+      li.onclick = () => selecionar(doc.id, item);
 
     lista.appendChild(li);
   });
 }
+
+
+
+
 
 // 🔍 Função de busca simples
 async function buscar() {
