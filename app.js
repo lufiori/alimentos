@@ -189,5 +189,34 @@ async function importarBaseGrande() {
   carregarAlimentos();
 }
 
+
+async function limparBase() {
+  if (!confirm("Tem certeza que deseja apagar TODOS os alimentos?")) return;
+
+  const snap = await db.collection("alimentos").get();
+
+  const batchSize = 50;
+  let batch = db.batch();
+  let count = 0;
+
+  for (const doc of snap.docs) {
+    batch.delete(doc.ref);
+    count++;
+
+    if (count === batchSize) {
+      await batch.commit();
+      batch = db.batch();
+      count = 0;
+    }
+  }
+
+  if (count > 0) {
+    await batch.commit();
+  }
+
+  alert("Base limpa!");
+  carregarAlimentos();
+}
+
 // INIT
 carregarAlimentos();
