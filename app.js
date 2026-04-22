@@ -226,5 +226,27 @@ async function limparBase(){
   carregarAlimentos();
 }
 
+
+async function importarBase(nomeArquivo){
+  const r = await fetch(nomeArquivo);
+  const dados = await r.json();
+
+  for(let i=0;i<dados.length;i+=50){
+    const batch = db.batch();
+
+    dados.slice(i,i+50).forEach(item=>{
+      const id = item.nome.toLowerCase().replace(/\s+/g,"_");
+      const ref = db.collection("alimentos").doc(id);
+      batch.set(ref,item,{merge:true});
+    });
+
+    await batch.commit();
+  }
+
+  alert(nomeArquivo + " importado!");
+  carregarAlimentos();
+}
+
+
 // START
 carregarAlimentos();
