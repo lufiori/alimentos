@@ -2,139 +2,185 @@
 <html lang="pt-br">
 
 <head>
-<meta charset="UTF-8">
-<title>App Nutricional</title>
+  <meta charset="UTF-8">
+  <title>App Nutricional</title>
 
-<style>
-body { font-family: Arial; background:#f4f6f8; padding:20px; }
-.container { max-width:1200px; margin:auto; }
-h1 { text-align:center; }
+  <!-- CSS -->
+  <style>
+    body {
+      font-family: Arial;
+      margin: 20px;
+      background: #f5f6fa;
+    }
 
-.grid {
-  display:grid;
-  grid-template-columns: repeat(4,1fr);
-  gap:10px;
-}
+    h1 {
+      text-align: center;
+    }
 
-input, select {
-  padding:8px;
-  font-size:13px;
-}
+    .container {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
 
-button {
-  padding:10px;
-  margin:5px;
-  cursor:pointer;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
 
-table {
-  width:100%;
-  margin-top:20px;
-  border-collapse:collapse;
-  background:white;
-}
+    input, select {
+      padding: 8px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
 
-th, td {
-  padding:8px;
-  border:1px solid #ddd;
-  text-align:center;
-}
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #3498db;
+      color: white;
+    }
 
-tr:hover { background:#eef; }
+    button:hover {
+      background: #2980b9;
+    }
 
-.bolinha {
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  display:inline-block;
-}
+    .acoes {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-.card-detalhe {
-  margin-top:20px;
-  padding:20px;
-  background:white;
-  border-radius:10px;
-}
+    /* TABELA */
+    .tabela-container {
+      overflow-x: auto;
+    }
 
-.grid-detalhe {
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:10px;
-}
-</style>
+    table {
+      width: 100%;
+      min-width: 1200px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background: #eee;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:hover {
+      background: #f1f1f1;
+      cursor: pointer;
+    }
+
+    .bolinha {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .detalhes {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container">
-
 <h1>🍎 App Nutricional</h1>
 
-<!-- FORM -->
-<div class="grid">
+<div class="container">
 
-<input id="nome" placeholder="Nome">
-<input id="categoria" placeholder="Categoria">
-<input id="porcao" placeholder="Porção">
+  <div class="grid">
+    <input id="nome" placeholder="Nome">
+    <input id="categoria" placeholder="Categoria">
+    <input id="porcao" placeholder="Porção (100g)">
 
-<input id="energia_kcal" type="number" placeholder="Kcal">
-<input id="carboidrato" type="number" placeholder="Carboidrato">
-<input id="proteina" type="number" placeholder="Proteína">
-<input id="gordura" type="number" placeholder="Gordura">
+    <input id="energia_kcal" placeholder="Kcal">
+    <input id="carboidrato" placeholder="Carboidrato">
+    <input id="proteina" placeholder="Proteína">
 
-<input id="fibra" type="number" placeholder="Fibra">
-<input id="colesterol" type="number" placeholder="Colesterol">
+    <input id="gordura" placeholder="Gordura">
+    <input id="fibra" placeholder="Fibra">
+    <input id="colesterol" placeholder="Colesterol">
 
-<input id="calcio" type="number" placeholder="Cálcio">
-<input id="sodio" type="number" placeholder="Sódio">
-<input id="magnesio" type="number" placeholder="Magnésio">
+    <input id="calcio" placeholder="Cálcio">
+    <input id="sodio" placeholder="Sódio">
+    <input id="magnesio" placeholder="Magnésio">
+  </div>
 
-</div>
+  <br>
 
-<select id="classificacao">
-<option value="bom">🟢 Bom</option>
-<option value="moderado">🟡 Moderado</option>
-<option value="evitar">🔴 Evitar</option>
-</select>
+  <select id="classificacao">
+    <option value="bom">🟢 Bom</option>
+    <option value="moderado">🟡 Moderado</option>
+    <option value="evitar">🔴 Evitar</option>
+  </select>
 
-<br>
+  <div class="acoes">
+    <button onclick="incluir()">Incluir</button>
+    <button onclick="alterar()">Alterar</button>
+    <button onclick="excluir()">Excluir</button>
+  </div>
 
-<button onclick="incluir()">Incluir</button>
-<button onclick="alterar()">Alterar</button>
-<button onclick="excluir()">Excluir</button>
-<button onclick="importarBaseGrande()">🚀 Importar Base</button>
+  <br>
 
-<p id="status"></p>
-
-<input id="busca" placeholder="Buscar..." onkeyup="buscar()">
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Nome</th>
-<th>Categoria</th>
-<th>Kcal</th>
-<th>Carb</th>
-<th>Prot</th>
-<th>Gord</th>
-<th>Fibra</th>
-<th>Colest</th>
-<th>Cálcio</th>
-<th>Sódio</th>
-<th>Magnésio</th>
-<th>Porção</th>
-</tr>
-</thead>
-<tbody id="lista"></tbody>
-</table>
-
-<div id="detalhe" class="card-detalhe" style="display:none;"></div>
+  <input id="busca" placeholder="Buscar..." onkeyup="buscar()">
 
 </div>
 
+<!-- TABELA -->
+<div class="container tabela-container">
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Kcal</th>
+        <th>Carb</th>
+        <th>Prot</th>
+        <th>Gord</th>
+        <th>Fibra</th>
+        <th>Colest</th>
+        <th>Cálcio</th>
+        <th>Sódio</th>
+        <th>Magnésio</th>
+        <th>Porção</th>
+      </tr>
+    </thead>
+    <tbody id="lista"></tbody>
+  </table>
+</div>
+
+<!-- DETALHES -->
+<div class="detalhes" id="detalhes">
+  <h2 id="detNome">Selecione um alimento</h2>
+  <p id="detInfo"></p>
+</div>
+
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
 <script src="app.js"></script>
 
 </body>
