@@ -1,11 +1,38 @@
-
 [
-{"nome":"Arroz branco","categoria":"Grãos","porcao":"100g","energia_kcal":130,"carboidrato":28,"classificacao":"moderado"},
-{"nome":"Arroz integral","categoria":"Grãos","porcao":"100g","energia_kcal":124,"carboidrato":26,"fibra":1.8,"classificacao":"bom"},
-{"nome":"Feijão carioca","categoria":"Leguminosas","porcao":"100g","energia_kcal":76,"proteina":4.8,"fibra":8.5,"classificacao":"bom"},
-{"nome":"Lentilha","categoria":"Leguminosas","porcao":"100g","energia_kcal":116,"proteina":9,"classificacao":"bom"},
-{"nome":"Grão-de-bico","categoria":"Leguminosas","porcao":"100g","energia_kcal":164,"proteina":9,"classificacao":"bom"},
-{"nome":"Aveia","categoria":"Grãos","porcao":"100g","energia_kcal":389,"fibra":10,"classificacao":"bom"},
-{"nome":"Quinoa","categoria":"Grãos","porcao":"100g","energia_kcal":120,"proteina":4.4,"classificacao":"bom"},
-{"nome":"Milho","categoria":"Grãos","porcao":"100g","energia_kcal":96,"classificacao":"moderado"}
+{"nome":"Arroz branco cozido","categoria":"Grãos","porcao":"100g","energia_kcal":130,"carboidrato":28,"proteina":2.7,"gordura":0.3,"fibra":0.4,"calcio":10,"ferro":0.2,"sodio":1,"potassio":35,"vitamina_b1":0.02,"vitamina_b3":1.5,"classificacao":"moderado"},
+{"nome":"Arroz integral cozido","categoria":"Grãos","porcao":"100g","energia_kcal":124,"carboidrato":26,"proteina":2.7,"gordura":1,"fibra":1.8,"calcio":10,"ferro":0.4,"sodio":1,"potassio":79,"vitamina_b1":0.17,"vitamina_b3":2.6,"classificacao":"bom"},
+{"nome":"Arroz parboilizado","categoria":"Grãos","porcao":"100g","energia_kcal":123,"carboidrato":26,"proteina":2.5,"gordura":0.3,"fibra":1.2,"calcio":5,"ferro":0.2,"sodio":1,"potassio":26,"classificacao":"moderado"},
+
+{"nome":"Aveia em flocos","categoria":"Grãos","porcao":"100g","energia_kcal":389,"carboidrato":66,"proteina":17,"gordura":7,"fibra":10,"calcio":54,"ferro":4.7,"sodio":2,"potassio":429,"vitamina_b1":0.76,"classificacao":"bom"},
+{"nome":"Farelo de aveia","categoria":"Grãos","porcao":"100g","energia_kcal":246,"carboidrato":66,"proteina":17,"gordura":7,"fibra":15,"calcio":58,"ferro":5.4,"potassio":566,"classificacao":"bom"},
+
+{"nome":"Quinoa cozida","categoria":"Grãos","porcao":"100g","energia_kcal":120,"carboidrato":21,"proteina":4.4,"gordura":1.9,"fibra":2.8,"calcio":17,"ferro":1.5,"potassio":172,"classificacao":"bom"},
+{"nome":"Amaranto","categoria":"Grãos","porcao":"100g","energia_kcal":371,"carboidrato":65,"proteina":14,"gordura":7,"fibra":7,"calcio":159,"ferro":7.6,"classificacao":"bom"},
+
+{"nome":"Milho verde","categoria":"Grãos","porcao":"100g","energia_kcal":96,"carboidrato":21,"proteina":3.4,"gordura":1.5,"fibra":2.4,"calcio":2,"ferro":0.5,"potassio":218,"classificacao":"moderado"},
+{"nome":"Fubá de milho","categoria":"Grãos","porcao":"100g","energia_kcal":360,"carboidrato":79,"proteina":7,"gordura":1.5,"fibra":7,"calcio":3,"ferro":2.7,"classificacao":"moderado"},
+
+{"nome":"Trigo em grão","categoria":"Grãos","porcao":"100g","energia_kcal":340,"carboidrato":72,"proteina":13,"gordura":2.5,"fibra":12,"calcio":34,"ferro":3.6,"classificacao":"moderado"},
+{"nome":"Farinha de trigo","categoria":"Grãos","porcao":"100g","energia_kcal":364,"carboidrato":76,"proteina":10,"gordura":1,"fibra":2.7,"calcio":15,"ferro":1.2,"classificacao":"moderado"},
+{"nome":"Pão branco","categoria":"Grãos","porcao":"100g","energia_kcal":265,"carboidrato":49,"proteina":9,"gordura":3.2,"fibra":2.4,"calcio":144,"ferro":3.6,"classificacao":"moderado"},
+{"nome":"Pão integral","categoria":"Grãos","porcao":"100g","energia_kcal":247,"carboidrato":41,"proteina":13,"gordura":4.2,"fibra":7,"calcio":107,"ferro":3.6,"classificacao":"bom"},
+
+{"nome":"Cevada","categoria":"Grãos","porcao":"100g","energia_kcal":354,"carboidrato":73,"proteina":12,"gordura":2.3,"fibra":17,"calcio":33,"ferro":3.6,"classificacao":"bom"},
+{"nome":"Centeio","categoria":"Grãos","porcao":"100g","energia_kcal":335,"carboidrato":76,"proteina":10,"gordura":1.6,"fibra":15,"calcio":24,"ferro":2.6,"classificacao":"bom"},
+
+{"nome":"Macarrão cozido","categoria":"Grãos","porcao":"100g","energia_kcal":131,"carboidrato":25,"proteina":5,"gordura":1.1,"fibra":1.8,"calcio":7,"ferro":1.3,"classificacao":"moderado"},
+{"nome":"Macarrão integral","categoria":"Grãos","porcao":"100g","energia_kcal":124,"carboidrato":27,"proteina":5.3,"gordura":0.9,"fibra":3.2,"calcio":13,"ferro":1.5,"classificacao":"bom"},
+
+{"nome":"Feijão carioca cozido","categoria":"Leguminosas","porcao":"100g","energia_kcal":76,"carboidrato":14,"proteina":4.8,"gordura":0.5,"fibra":8.5,"calcio":27,"ferro":1.3,"potassio":140,"classificacao":"bom"},
+{"nome":"Feijão preto cozido","categoria":"Leguminosas","porcao":"100g","energia_kcal":77,"carboidrato":14,"proteina":4.5,"gordura":0.5,"fibra":8.4,"calcio":29,"ferro":1.5,"classificacao":"bom"},
+{"nome":"Feijão branco","categoria":"Leguminosas","porcao":"100g","energia_kcal":140,"carboidrato":26,"proteina":9,"gordura":0.5,"fibra":10,"calcio":90,"ferro":3.7,"classificacao":"bom"},
+
+{"nome":"Lentilha cozida","categoria":"Leguminosas","porcao":"100g","energia_kcal":116,"carboidrato":20,"proteina":9,"gordura":0.4,"fibra":8,"calcio":19,"ferro":3.3,"classificacao":"bom"},
+{"nome":"Grão-de-bico cozido","categoria":"Leguminosas","porcao":"100g","energia_kcal":164,"carboidrato":27,"proteina":9,"gordura":2.6,"fibra":7.6,"calcio":49,"ferro":2.9,"classificacao":"bom"},
+{"nome":"Ervilha cozida","categoria":"Leguminosas","porcao":"100g","energia_kcal":84,"carboidrato":15,"proteina":5.4,"gordura":0.4,"fibra":5.5,"calcio":25,"ferro":1.5,"classificacao":"bom"},
+{"nome":"Soja cozida","categoria":"Leguminosas","porcao":"100g","energia_kcal":173,"carboidrato":10,"proteina":16.6,"gordura":9,"fibra":6,"calcio":277,"ferro":5.1,"classificacao":"bom"},
+
+{"nome":"Linhaça","categoria":"Grãos","porcao":"100g","energia_kcal":534,"carboidrato":29,"proteina":18,"gordura":42,"fibra":27,"calcio":255,"ferro":5.7,"classificacao":"bom"},
+{"nome":"Chia","categoria":"Grãos","porcao":"100g","energia_kcal":486,"carboidrato":42,"proteina":17,"gordura":31,"fibra":34,"calcio":631,"ferro":7.7,"classificacao":"bom"},
+{"nome":"Gergelim","categoria":"Grãos","porcao":"100g","energia_kcal":573,"carboidrato":23,"proteina":18,"gordura":50,"fibra":12,"calcio":975,"ferro":14.6,"classificacao":"bom"}
 ]
