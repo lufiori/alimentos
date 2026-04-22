@@ -164,20 +164,24 @@ async function buscar(){
 }
 
 // IMPORTAR BASE
-async function importarBaseGrande(){
+async function importarBaseGrande() {
   const r = await fetch("base500.json");
   const dados = await r.json();
 
-  const batch = db.batch();
+  const chunkSize = 50;
 
-  dados.forEach(item=>{
-    const ref = db.collection("alimentos").doc();
-    batch.set(ref,item);
-  });
+  for (let i = 0; i < dados.length; i += chunkSize) {
+    const batch = db.batch();
 
-  await batch.commit();
+    dados.slice(i, i + chunkSize).forEach(item => {
+      const ref = db.collection("alimentos").doc();
+      batch.set(ref, item);
+    });
 
-  alert("Base importada!");
+    await batch.commit();
+  }
+
+  alert("Base grande importada!");
   carregarAlimentos();
 }
 
