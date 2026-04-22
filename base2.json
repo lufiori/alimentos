@@ -1,1 +1,11 @@
 
+[
+{"nome":"Arroz branco","categoria":"Grãos","porcao":"100g","energia_kcal":130,"carboidrato":28,"classificacao":"moderado"},
+{"nome":"Arroz integral","categoria":"Grãos","porcao":"100g","energia_kcal":124,"carboidrato":26,"fibra":1.8,"classificacao":"bom"},
+{"nome":"Feijão carioca","categoria":"Leguminosas","porcao":"100g","energia_kcal":76,"proteina":4.8,"fibra":8.5,"classificacao":"bom"},
+{"nome":"Lentilha","categoria":"Leguminosas","porcao":"100g","energia_kcal":116,"proteina":9,"classificacao":"bom"},
+{"nome":"Grão-de-bico","categoria":"Leguminosas","porcao":"100g","energia_kcal":164,"proteina":9,"classificacao":"bom"},
+{"nome":"Aveia","categoria":"Grãos","porcao":"100g","energia_kcal":389,"fibra":10,"classificacao":"bom"},
+{"nome":"Quinoa","categoria":"Grãos","porcao":"100g","energia_kcal":120,"proteina":4.4,"classificacao":"bom"},
+{"nome":"Milho","categoria":"Grãos","porcao":"100g","energia_kcal":96,"classificacao":"moderado"}
+]
