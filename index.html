@@ -70,15 +70,15 @@ body {
 
 
 <!-- 🔥 TELA 2 (LISTA) -->
-<div id="tela2" class="tela">
+<div id="tela2" class="container tabela-container">
 
   <div class="voltar" onclick="voltar()">⬅ Voltar</div>
 
   <h2 id="tituloCategoria"></h2>
 
   <input type="text" id="busca" placeholder="Buscar..." onkeyup="buscarCategoria()">
-
-  <table border="1" width="100%">
+    <hr>
+  <table>
     <thead>
       <tr>
         <th>Nome</th>
@@ -99,7 +99,7 @@ body {
 
   <div class="voltar" onclick="voltarParaLista()">⬅ Voltar</div>
 
-  <div style="border:2px solid black; padding:20px; max-width:400px; background:white">
+  <div style="border:1px solid black; padding:20px; max-width:300px; background:white">
 
     <h2 id="r_nome"></h2>
     <p><strong>Porção:</strong> <span id="r_porcao"></span></p>
