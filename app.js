@@ -228,23 +228,39 @@ async function limparBase(){
 
 
 async function importarBase(nomeArquivo){
-  const r = await fetch(nomeArquivo);
-  const dados = await r.json();
+  try {
 
-  for(let i=0;i<dados.length;i+=50){
-    const batch = db.batch();
+    const response = await fetch(nomeArquivo);
 
-    dados.slice(i,i+50).forEach(item=>{
-      const id = item.nome.toLowerCase().replace(/\s+/g,"_");
-      const ref = db.collection("alimentos").doc(id);
-      batch.set(ref,item,{merge:true});
-    });
+    if (!response.ok) {
+      alert("❌ Não encontrou o arquivo: " + nomeArquivo);
+      return;
+    }
 
-    await batch.commit();
+    const dados = await response.json();
+
+    for (let i = 0; i < dados.length; i += 50) {
+      const batch = db.batch();
+
+      dados.slice(i, i + 50).forEach(item => {
+        const id = (item.nome || "sem_nome")
+          .toLowerCase()
+          .replace(/\s+/g, "_");
+
+        const ref = db.collection("alimentos").doc(id);
+        batch.set(ref, item, { merge: true });
+      });
+
+      await batch.commit();
+    }
+
+    alert("✅ " + nomeArquivo + " importado!");
+    carregarAlimentos();
+
+  } catch (e) {
+    console.error(e);
+    alert("❌ Erro ao importar. Provável problema com arquivo JSON.");
   }
-
-  alert(nomeArquivo + " importado!");
-  carregarAlimentos();
 }
 
 
