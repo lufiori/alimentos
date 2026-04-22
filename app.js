@@ -185,5 +185,9 @@ async function importarBaseGrande() {
   carregarAlimentos();
 }
 
+  alert("Base grande importada!");
+  carregarAlimentos();
+}
+
 // INIT
 carregarAlimentos();
