@@ -1,1 +1,8 @@
 
+[
+{"nome":"Frango grelhado","categoria":"Carnes","porcao":"100g","energia_kcal":165,"proteina":31,"gordura":3.6,"classificacao":"bom"},
+{"nome":"Carne bovina","categoria":"Carnes","porcao":"100g","energia_kcal":250,"gordura":15,"classificacao":"moderado"},
+{"nome":"Carne suína","categoria":"Carnes","porcao":"100g","energia_kcal":242,"gordura":14,"classificacao":"moderado"},
+{"nome":"Peixe","categoria":"Carnes","porcao":"100g","energia_kcal":120,"proteina":22,"classificacao":"bom"},
+{"nome":"Ovo cozido","categoria":"Ovos","porcao":"100g","energia_kcal":155,"colesterol":373,"classificacao":"moderado"}
+]
