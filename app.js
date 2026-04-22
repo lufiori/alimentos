@@ -265,64 +265,6 @@ async function importarBase(nomeArquivo){
 
 
 
-async function importarBaseFULL(){
-  try {
-
-    const url = "https://raw.githubusercontent.com/rafaeloliveira-nutri/taco-json/master/taco.json";
-
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      alert("Erro ao acessar a base online 😢");
-      return;
-    }
-
-    const dados = await response.json();
-
-    const chunk = 50;
-
-    for (let i = 0; i < dados.length; i += chunk) {
-      const batch = db.batch();
-
-      dados.slice(i, i + chunk).forEach(item => {
-
-        const nome = item.nome || item.descricao || "sem_nome";
-
-        const id = nome.toLowerCase().replace(/\s+/g, "_");
-
-        const ref = db.collection("alimentos").doc(id);
-
-        batch.set(ref, {
-          nome: nome,
-          categoria: item.grupo || "Outros",
-          porcao: "100g",
-          energia_kcal: item.energia_kcal || 0,
-          proteina: item.proteina_g || 0,
-          gordura: item.lipideos_g || 0,
-          carboidrato: item.carboidrato_g || 0,
-          fibra: item.fibra_g || 0,
-          colesterol: item.colesterol_mg || 0,
-          calcio: item.calcio_mg || 0,
-          ferro: item.ferro_mg || 0,
-          sodio: item.sodio_mg || 0,
-          potassio: item.potassio_mg || 0,
-          classificacao: "moderado"
-        }, { merge: true });
-
-      });
-
-      await batch.commit();
-    }
-
-    alert("🚀 BASE FULL IMPORTADA!");
-    carregarAlimentos();
-
-  } catch (e) {
-    console.error(e);
-    alert("Erro geral 😢 me chama que resolvo contigo");
-  }
-}
-
 
 
 async function normalizarBanco() {
