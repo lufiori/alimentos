@@ -2,159 +2,141 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8">
-  <title>App de Alimentos</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>App Nutricional</title>
 
-  <style>
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+<style>
+body {
+  font-family: Arial;
+  background: #f4f6f8;
+  padding: 20px;
+}
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
 
-    .full {
-      grid-column: span 2;
-    }
+h1 {
+  text-align: center;
+}
 
-    label {
-      font-size: 13px;
-      color: #555;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
 
-    input, select {
-      padding: 6px;
-      font-size: 13px;
-    }
-  </style>
+input, select {
+  padding: 8px;
+  font-size: 13px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+tr:hover {
+  background: #eef;
+}
+
+.bolinha {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.card-detalhe {
+  margin-top: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+}
+
+.grid-detalhe {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1>🍎 App de Alimentos</h1>
+<h1>🍎 App Nutricional</h1>
 
-  <!-- FORMULÁRIO -->
-  <h2>Cadastro</h2>
+<!-- FORM -->
+<div class="grid">
+<input id="nome" placeholder="Nome">
+<input id="categoria" placeholder="Categoria">
+<input id="porcao" placeholder="Porção">
 
-  <div class="grid">
+<input id="energia_kcal" type="number" placeholder="Kcal">
+<input id="carboidrato" type="number" placeholder="Carboidrato">
+<input id="proteina" type="number" placeholder="Proteína">
 
-    <div class="full">
-      <label>Nome:</label>
-      <input type="text" id="nome">
-    </div>
+<input id="gordura" type="number" placeholder="Gordura">
+<input id="fibra" type="number" placeholder="Fibra">
+<input id="colesterol" type="number" placeholder="Colesterol">
 
-    <div>
-      <label>Categoria:</label>
-      <input type="text" id="categoria">
-    </div>
+<input id="calcio" type="number" placeholder="Cálcio">
+<input id="sodio" type="number" placeholder="Sódio">
+<input id="magnesio" type="number" placeholder="Magnésio">
+</div>
 
-    <div>
-      <label>Porção:</label>
-      <input type="text" id="porcao">
-    </div>
+<select id="classificacao">
+<option value="bom">🟢 Bom</option>
+<option value="moderado">🟡 Moderado</option>
+<option value="evitar">🔴 Evitar</option>
+</select>
 
-  </div>
+<br>
 
-  <div class="grid-3">
+<button onclick="incluir()">Incluir</button>
+<button onclick="alterar()">Alterar</button>
+<button onclick="excluir()">Excluir</button>
+<button onclick="carregarBase()">🔥 Base pronta</button>
 
-    <div>
-      <label>Calorias:</label>
-      <input type="number" id="calorias">
-    </div>
+<p id="status"></p>
 
-    <div>
-      <label>Carboidrato:</label>
-      <input type="number" id="carboidrato">
-    </div>
+<input id="busca" placeholder="Buscar..." onkeyup="buscar()">
 
-    <div>
-      <label>Proteína:</label>
-      <input type="number" id="proteina">
-    </div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Nome</th>
+<th>Kcal</th>
+<th>Prot</th>
+<th>Gord</th>
+</tr>
+</thead>
+<tbody id="lista"></tbody>
+</table>
 
-    <div>
-      <label>Gordura:</label>
-      <input type="number" id="gordura">
-    </div>
-
-    <div>
-      <label>Fibra:</label>
-      <input type="number" id="fibra">
-    </div>
-
-    <div>
-      <label>Colesterol:</label>
-      <input type="number" id="colesterol">
-    </div>
-
-  </div>
-
-  <br>
-  
-<input type="number" id="fibra" placeholder="Fibra">
-<input type="number" id="calcio" placeholder="Cálcio">
-<input type="number" id="sodio" placeholder="Sódio">  
-  
-  <br>
-
-  <label>Classificação:</label>
-  <select id="classificacao">
-    <option value="bom">🟢 Bom</option>
-    <option value="moderado">🟡 Moderado</option>
-    <option value="evitar">🔴 Evitar</option>
-  </select>
-
-  <br><br>
-
-  <button onclick="incluir()">Incluir</button>
-  <button onclick="alterar()">Alterar</button>
-  <button onclick="excluir()">Excluir</button>
-
-  <p id="status"></p>
-
-  <!-- BUSCA -->
-  <h2>Lista</h2>
-
-  <input type="text" id="busca" placeholder="Buscar..." onkeyup="buscar()">
-
-  <!-- TABELA -->
-  <table>
-    <thead>
-      <tr>
-        <th>Status</th>
-        <th>Nome</th>
-        <th>Categoria</th>
-        <th>Cal</th>
-        <th>Carb</th>
-        <th>Prot</th>
-        <th>Gord</th>
-        <th>Fibra</th>
-        <th>Colest</th>
-        <th>Porção</th>
-      </tr>
-    </thead>
-    <tbody id="lista"></tbody>
-  </table>
 <div id="detalhe" class="card-detalhe" style="display:none;"></div>
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
 <script src="app.js"></script>
 
-  <button onclick="carregarBase()">🔥 Carregar alimentos padrão</button>
-  
-  <button onclick="atualizarCampos()">Atualizar Banco</button>
-  
-  
 </body>
 </html>
