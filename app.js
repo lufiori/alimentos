@@ -55,10 +55,7 @@ async function carregarAlimentos(){
         <td>${i.porcao || "-"}</td>
       `;
 
-      tr.onclick = () => {
-        selecionar(doc.id, item);
-        mostrarDetalhe(item);
-      };
+      tr.onclick = () => abrirDetalhe(item);
 
       lista.appendChild(tr);
     });
@@ -454,10 +451,56 @@ async function buscarCategoria() {
 }
 
 
+function abrirDetalhe(item) {
+
+  // troca de tela
+  document.getElementById("tela2").classList.remove("ativa");
+  document.getElementById("tela3").classList.add("ativa");
+
+  // preencher dados
+  document.getElementById("r_nome").innerText = item.nome;
+  document.getElementById("r_porcao").innerText = item.porcao || "100g";
+
+  document.getElementById("r_kcal").innerText = item.energia_kcal || 0;
+
+  document.getElementById("r_carbo").innerText = item.carboidrato || 0;
+  document.getElementById("r_prot").innerText = item.proteina || 0;
+  document.getElementById("r_gord").innerText = item.gordura || 0;
+  document.getElementById("r_fibra").innerText = item.fibra || 0;
+
+  document.getElementById("r_va").innerText = item.vitamina_a || 0;
+  document.getElementById("r_vc").innerText = item.vitamina_c || 0;
+  document.getElementById("r_vb6").innerText = item.vitamina_b6 || 0;
+
+  document.getElementById("r_calc").innerText = item.calcio || 0;
+  document.getElementById("r_ferro").innerText = item.ferro || 0;
+  document.getElementById("r_pot").innerText = item.potassio || 0;
+  document.getElementById("r_sodio").innerText = item.sodio || 0;
+
+  // classificação
+  let texto = "MODERADO 🟡";
+  let cor = "orange";
+
+  if (item.classificacao === "bom") {
+    texto = "BOM 🟢";
+    cor = "green";
+  }
+
+  if (item.classificacao === "evitar") {
+    texto = "EVITAR 🔴";
+    cor = "red";
+  }
+
+  const el = document.getElementById("r_class");
+  el.innerText = texto;
+  el.style.color = cor;
+}
 
 
-
-
+function voltarParaLista() {
+  document.getElementById("tela3").classList.remove("ativa");
+  document.getElementById("tela2").classList.add("ativa");
+}
 
 
 
