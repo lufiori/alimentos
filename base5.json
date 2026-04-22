@@ -1,1 +1,7 @@
 
+[
+{"nome":"Refrigerante","categoria":"Industrializados","porcao":"100ml","energia_kcal":42,"classificacao":"evitar"},
+{"nome":"Chocolate","categoria":"Industrializados","porcao":"100g","energia_kcal":546,"classificacao":"evitar"},
+{"nome":"Batata frita","categoria":"Industrializados","porcao":"100g","energia_kcal":312,"classificacao":"evitar"},
+{"nome":"Hambúrguer","categoria":"Industrializados","porcao":"100g","energia_kcal":295,"classificacao":"evitar"}
+]
