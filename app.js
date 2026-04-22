@@ -56,9 +56,8 @@ async function carregarAlimentos(){
       `;
 
       tr.onclick = () => {
-        idSelecionado = doc.id;
-        preencherCampos(i);
-        mostrarDetalhe(i);
+        selecionar(doc.id, item);
+        mostrarDetalhe(item);
       };
 
       lista.appendChild(tr);
