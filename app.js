@@ -11,12 +11,7 @@ const firebaseConfig = {
   measurementId: "G-PPTQ4Y39FZ"
 };
 
-// 🔥 CONFIG FIREBASE (coloque a sua)
-const firebaseConfig = {
-  apiKey: "SUA_KEY",
-  authDomain: "SEU_AUTH",
-  projectId: "SEU_PROJECT"
-};
+
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
