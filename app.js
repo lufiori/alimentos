@@ -18,7 +18,7 @@ const db = firebase.firestore();
 
 let idSelecionado = null;
 
-// 🎨 cor da bolinha
+// cor bolinha
 function corClassificacao(c){
   if(c==="bom") return "green";
   if(c==="moderado") return "orange";
@@ -26,85 +26,91 @@ function corClassificacao(c){
   return "gray";
 }
 
-// 📋 LISTAR
+// 🔥 CARREGAR (BLINDADO)
 async function carregarAlimentos(){
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const snap = await db.collection("alimentos").get();
+  try {
+    const snap = await db.collection("alimentos").get();
 
-  snap.forEach(doc=>{
-    const i = doc.data();
+    snap.forEach(doc=>{
+      const i = doc.data() || {};
 
-    const tr = document.createElement("tr");
+      const tr = document.createElement("tr");
 
-    tr.innerHTML = `
-      <td><span class="bolinha" style="background:${corClassificacao(i.classificacao)}"></span></td>
-      <td>${i.nome || "-"}</td>
-      <td>${i.categoria || "-"}</td>
-      <td>${i.energia_kcal ?? "-"}</td>
-      <td>${i.carboidrato ?? "-"}</td>
-      <td>${i.proteina ?? "-"}</td>
-      <td>${i.gordura ?? "-"}</td>
-      <td>${i.fibra ?? "-"}</td>
-      <td>${i.colesterol ?? "-"}</td>
-      <td>${i.calcio ?? "-"}</td>
-      <td>${i.sodio ?? "-"}</td>
-      <td>${i.magnesio ?? "-"}</td>
-      <td>${i.porcao || "-"}</td>
-    `;
+      tr.innerHTML = `
+        <td><span class="bolinha" style="background:${corClassificacao(i.classificacao)}"></span></td>
+        <td>${i.nome || "-"}</td>
+        <td>${i.categoria || "-"}</td>
+        <td>${i.energia_kcal ?? "-"}</td>
+        <td>${i.carboidrato ?? "-"}</td>
+        <td>${i.proteina ?? "-"}</td>
+        <td>${i.gordura ?? "-"}</td>
+        <td>${i.fibra ?? "-"}</td>
+        <td>${i.colesterol ?? "-"}</td>
+        <td>${i.calcio ?? "-"}</td>
+        <td>${i.sodio ?? "-"}</td>
+        <td>${i.magnesio ?? "-"}</td>
+        <td>${i.porcao || "-"}</td>
+      `;
 
-    tr.onclick = () => {
-      idSelecionado = doc.id;
-      preencherCampos(i);
-      mostrarDetalhe(i);
-    };
+      tr.onclick = () => {
+        idSelecionado = doc.id;
+        preencherCampos(i);
+        mostrarDetalhe(i);
+      };
 
-    lista.appendChild(tr);
-  });
+      lista.appendChild(tr);
+    });
+
+  } catch (e) {
+    alert("Erro ao carregar dados 😢");
+    console.error(e);
+  }
 }
 
-// 🔎 DETALHE
+// DETALHE
 function mostrarDetalhe(i){
-  document.getElementById("detNome").innerText = i.nome;
+  document.getElementById("detNome").innerText = i.nome || "-";
 
   document.getElementById("detInfo").innerHTML = `
-    Categoria: ${i.categoria}<br>
-    Porção: ${i.porcao}<br><br>
+    Categoria: ${i.categoria || "-"}<br>
+    Porção: ${i.porcao || "-"}<br><br>
 
-    Kcal: ${i.energia_kcal}<br>
-    Carboidrato: ${i.carboidrato}<br>
-    Proteína: ${i.proteina}<br>
-    Gordura: ${i.gordura}<br>
-    Fibra: ${i.fibra}<br>
-    Colesterol: ${i.colesterol}<br><br>
+    Kcal: ${i.energia_kcal ?? "-"}<br>
+    Carboidrato: ${i.carboidrato ?? "-"}<br>
+    Proteína: ${i.proteina ?? "-"}<br>
+    Gordura: ${i.gordura ?? "-"}<br>
+    Fibra: ${i.fibra ?? "-"}<br>
+    Colesterol: ${i.colesterol ?? "-"}<br><br>
 
-    Cálcio: ${i.calcio}<br>
-    Sódio: ${i.sodio}<br>
-    Magnésio: ${i.magnesio}
+    Cálcio: ${i.calcio ?? "-"}<br>
+    Sódio: ${i.sodio ?? "-"}<br>
+    Magnésio: ${i.magnesio ?? "-"}
   `;
 }
 
-// 🧾 PEGAR CAMPOS
+// PEGAR FORM
 function pegarCampos(){
   return {
-    nome: nome.value,
-    categoria: categoria.value,
-    porcao: porcao.value,
-    energia_kcal: Number(energia_kcal.value),
-    carboidrato: Number(carboidrato.value),
-    proteina: Number(proteina.value),
-    gordura: Number(gordura.value),
-    fibra: Number(fibra.value),
-    colesterol: Number(colesterol.value),
-    calcio: Number(calcio.value),
-    sodio: Number(sodio.value),
-    magnesio: Number(magnesio.value),
-    classificacao: classificacao.value
+    nome: nome.value || "",
+    categoria: categoria.value || "",
+    porcao: porcao.value || "100g",
+    energia_kcal: Number(energia_kcal.value) || 0,
+    carboidrato: Number(carboidrato.value) || 0,
+    proteina: Number(proteina.value) || 0,
+    gordura: Number(gordura.value) || 0,
+    fibra: Number(fibra.value) || 0,
+    colesterol: Number(colesterol.value) || 0,
+    calcio: Number(calcio.value) || 0,
+    sodio: Number(sodio.value) || 0,
+    magnesio: Number(magnesio.value) || 0,
+    classificacao: classificacao.value || "moderado"
   };
 }
 
-// ✏️ PREENCHER FORM
+// PREENCHER
 function preencherCampos(i){
   nome.value = i.nome || "";
   categoria.value = i.categoria || "";
@@ -120,93 +126,86 @@ function preencherCampos(i){
   magnesio.value = i.magnesio || 0;
 }
 
-// ➕ INCLUIR
+// CRUD
 async function incluir(){
-  const dados = pegarCampos();
-
-  const id = dados.nome.toLowerCase().replace(/\s+/g, "_");
-
-  await db.collection("alimentos").doc(id).set(dados);
-
+  const d = pegarCampos();
+  const id = d.nome.toLowerCase().replace(/\s+/g,"_");
+  await db.collection("alimentos").doc(id).set(d, { merge:true });
   limpar();
   carregarAlimentos();
 }
 
-// ✏️ ALTERAR
 async function alterar(){
-  if(!idSelecionado) return alert("Selecione um item!");
-
+  if(!idSelecionado) return alert("Selecione!");
   await db.collection("alimentos").doc(idSelecionado).update(pegarCampos());
-
   limpar();
   carregarAlimentos();
 }
 
-// ❌ EXCLUIR
 async function excluir(){
-  if(!idSelecionado) return alert("Selecione um item!");
-
+  if(!idSelecionado) return alert("Selecione!");
   await db.collection("alimentos").doc(idSelecionado).delete();
-
   limpar();
   carregarAlimentos();
 }
 
-// 🧹 LIMPAR CAMPOS
 function limpar(){
-  document.querySelectorAll("input").forEach(i => i.value = "");
-  idSelecionado = null;
+  document.querySelectorAll("input").forEach(i=>i.value="");
+  idSelecionado=null;
 }
 
-// 🔍 BUSCAR
+// BUSCAR (SEGURA)
 async function buscar(){
-  const t = busca.value.toLowerCase();
+  const t = (busca.value || "").toLowerCase();
   const lista = document.getElementById("lista");
-  lista.innerHTML = "";
+  lista.innerHTML="";
 
   const snap = await db.collection("alimentos").get();
 
   snap.forEach(doc=>{
-    const i = doc.data();
-    if(i.nome.toLowerCase().includes(t)){
+    const i = doc.data() || {};
+
+    if((i.nome || "").toLowerCase().includes(t)){
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td></td><td>${i.nome}</td><td>${i.energia_kcal}</td>`;
+      tr.innerHTML = `
+        <td></td>
+        <td>${i.nome || "-"}</td>
+        <td>${i.energia_kcal ?? "-"}</td>
+      `;
       lista.appendChild(tr);
     }
   });
 }
 
-// 🚀 IMPORTAR BASE GRANDE (SEM DUPLICAR)
+// IMPORTAR BASE
 async function importarBaseGrande(){
   const r = await fetch("base500.json");
   const dados = await r.json();
 
-  const chunkSize = 50;
+  const chunk = 50;
 
-  for(let i = 0; i < dados.length; i += chunkSize){
+  for(let i=0;i<dados.length;i+=chunk){
     const batch = db.batch();
 
-    dados.slice(i, i + chunkSize).forEach(item=>{
-      const id = item.nome.toLowerCase().replace(/\s+/g, "_");
+    dados.slice(i,i+chunk).forEach(item=>{
+      const id = item.nome.toLowerCase().replace(/\s+/g,"_");
       const ref = db.collection("alimentos").doc(id);
-
-      batch.set(ref, item, { merge: true });
+      batch.set(ref,item,{merge:true});
     });
 
     await batch.commit();
   }
 
-  alert("Base importada sem duplicar!");
+  alert("Base importada!");
   carregarAlimentos();
 }
 
-// 🧹 LIMPAR BASE COMPLETA
+// LIMPAR BASE
 async function limparBase(){
-  if (!confirm("Apagar TODOS os alimentos?")) return;
+  if (!confirm("Apagar tudo?")) return;
 
   const snap = await db.collection("alimentos").get();
 
-  const batchSize = 50;
   let batch = db.batch();
   let count = 0;
 
@@ -214,7 +213,7 @@ async function limparBase(){
     batch.delete(doc.ref);
     count++;
 
-    if (count === batchSize) {
+    if (count === 50) {
       await batch.commit();
       batch = db.batch();
       count = 0;
@@ -227,5 +226,5 @@ async function limparBase(){
   carregarAlimentos();
 }
 
-// 🚀 INICIAR
+// START
 carregarAlimentos();
