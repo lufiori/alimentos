@@ -93,7 +93,51 @@ body {
 
 </div>
 
+  
+<!-- 🔥 TELA 3 (DETALHE) -->
+<div id="tela3" class="tela">
 
+  <div class="voltar" onclick="voltarParaLista()">⬅ Voltar</div>
+
+  <div style="border:2px solid black; padding:20px; max-width:400px; background:white">
+
+    <h2 id="r_nome"></h2>
+    <p><strong>Porção:</strong> <span id="r_porcao"></span></p>
+
+    <hr>
+
+    <h3>Informação Nutricional</h3>
+
+    <p><strong>Calorias:</strong> <span id="r_kcal"></span> kcal</p>
+
+    <p>Carboidratos: <span id="r_carbo"></span> g</p>
+    <p>Proteínas: <span id="r_prot"></span> g</p>
+    <p>Gorduras: <span id="r_gord"></span> g</p>
+    <p>Fibra: <span id="r_fibra"></span> g</p>
+
+    <hr>
+
+    <h3>Vitaminas</h3>
+    <p>Vitamina A: <span id="r_va"></span></p>
+    <p>Vitamina C: <span id="r_vc"></span></p>
+    <p>Vitamina B6: <span id="r_vb6"></span></p>
+
+    <hr>
+
+    <h3>Minerais</h3>
+    <p>Cálcio: <span id="r_calc"></span></p>
+    <p>Ferro: <span id="r_ferro"></span></p>
+    <p>Potássio: <span id="r_pot"></span></p>
+    <p>Sódio: <span id="r_sodio"></span></p>
+
+    <hr>
+
+    <h3 id="r_class"></h3>
+
+  </div>
+
+</div>
+  
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
