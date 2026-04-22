@@ -48,7 +48,16 @@ async function carregarAlimentos() {
 
     tr.onclick = () => selecionar(doc.id, item);
 
+    
+    
     lista.appendChild(tr);
+
+
+    tr.onclick = () => {
+      selecionar(doc.id, item);
+      mostrarDetalhe(item);
+    };
+    
   });
 }
 
@@ -186,4 +195,30 @@ async function atualizarCampos() {
 }
 
 
+
+function mostrarDetalhe(item) {
+  const div = document.getElementById("detalhe");
+
+  div.style.display = "block";
+
+  div.innerHTML = `
+    <h2>${item.nome}</h2>
+    <p><strong>Grupo:</strong> ${item.categoria}</p>
+
+    <hr>
+
+    <div class="grid-detalhe">
+      <div><b>Energia:</b> ${item.energia_kcal} kcal</div>
+      <div><b>Carboidrato:</b> ${item.carboidrato} g</div>
+      <div><b>Proteína:</b> ${item.proteina} g</div>
+      <div><b>Gordura:</b> ${item.gordura} g</div>
+      <div><b>Fibra:</b> ${item.fibra} g</div>
+      <div><b>Colesterol:</b> ${item.colesterol} mg</div>
+      <div><b>Cálcio:</b> ${item.calcio} mg</div>
+      <div><b>Magnésio:</b> ${item.magnesio} mg</div>
+      <div><b>Sódio:</b> ${item.sodio} mg</div>
+      <div><b>Umidade:</b> ${item.umidade}%</div>
+    </div>
+  `;
+}
 
