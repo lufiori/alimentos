@@ -10,6 +10,30 @@ body {
   margin: 20px;
 }
 
+    table {
+      width: 100%;
+      min-width: 1200px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background: #eee;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:hover {
+      background: #f1f1f1;
+      cursor: pointer;
+    }
+
+  
 /* GRID DAS CATEGORIAS */
 .grid {
   display: grid;
@@ -81,7 +105,7 @@ body {
   <hr>
   <br>
   
-  <table {width: 100%;  margin-top: 15px;  border-collapse: collapse;}>
+  <table>
     <thead>
       <tr>
         <th>Nome</th>
