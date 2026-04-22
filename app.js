@@ -11,12 +11,19 @@ const firebaseConfig = {
   measurementId: "G-PPTQ4Y39FZ"
 };
 
+// 🔥 CONFIG FIREBASE (coloque a sua)
+const firebaseConfig = {
+  apiKey: "SUA_KEY",
+  authDomain: "SEU_AUTH",
+  projectId: "SEU_PROJECT"
+};
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 let idSelecionado = null;
 
+// 🎨 cor da bolinha
 function corClassificacao(c){
   if(c==="bom") return "green";
   if(c==="moderado") return "orange";
@@ -24,10 +31,10 @@ function corClassificacao(c){
   return "gray";
 }
 
-// LISTAR
+// 📋 LISTAR
 async function carregarAlimentos(){
   const lista = document.getElementById("lista");
-  lista.innerHTML="";
+  lista.innerHTML = "";
 
   const snap = await db.collection("alimentos").get();
 
@@ -36,23 +43,23 @@ async function carregarAlimentos(){
 
     const tr = document.createElement("tr");
 
-    tr.innerHTML=`
+    tr.innerHTML = `
       <td><span class="bolinha" style="background:${corClassificacao(i.classificacao)}"></span></td>
-      <td>${i.nome||""}</td>
-      <td>${i.categoria||""}</td>
-      <td>${i.energia_kcal||0}</td>
-      <td>${i.carboidrato||0}</td>
-      <td>${i.proteina||0}</td>
-      <td>${i.gordura||0}</td>
-      <td>${i.fibra||0}</td>
-      <td>${i.colesterol||0}</td>
-      <td>${i.calcio||0}</td>
-      <td>${i.sodio||0}</td>
-      <td>${i.magnesio||0}</td>
-      <td>${i.porcao||""}</td>
+      <td>${i.nome || "-"}</td>
+      <td>${i.categoria || "-"}</td>
+      <td>${i.energia_kcal ?? "-"}</td>
+      <td>${i.carboidrato ?? "-"}</td>
+      <td>${i.proteina ?? "-"}</td>
+      <td>${i.gordura ?? "-"}</td>
+      <td>${i.fibra ?? "-"}</td>
+      <td>${i.colesterol ?? "-"}</td>
+      <td>${i.calcio ?? "-"}</td>
+      <td>${i.sodio ?? "-"}</td>
+      <td>${i.magnesio ?? "-"}</td>
+      <td>${i.porcao || "-"}</td>
     `;
 
-    tr.onclick=()=>{
+    tr.onclick = () => {
       idSelecionado = doc.id;
       preencherCampos(i);
       mostrarDetalhe(i);
@@ -62,136 +69,145 @@ async function carregarAlimentos(){
   });
 }
 
-// DETALHE
+// 🔎 DETALHE
 function mostrarDetalhe(i){
-  const d = document.getElementById("detalhe");
-  d.style.display="block";
+  document.getElementById("detNome").innerText = i.nome;
 
-  d.innerHTML=`
-    <h2>${i.nome}</h2>
-    <p><b>Categoria:</b> ${i.categoria}</p>
-    <hr>
-    <div class="grid-detalhe">
-      <div>Kcal: ${i.energia_kcal}</div>
-      <div>Carboidrato: ${i.carboidrato}</div>
-      <div>Proteína: ${i.proteina}</div>
-      <div>Gordura: ${i.gordura}</div>
-      <div>Fibra: ${i.fibra}</div>
-      <div>Colesterol: ${i.colesterol}</div>
-      <div>Cálcio: ${i.calcio}</div>
-      <div>Sódio: ${i.sodio}</div>
-      <div>Magnésio: ${i.magnesio}</div>
-    </div>
+  document.getElementById("detInfo").innerHTML = `
+    Categoria: ${i.categoria}<br>
+    Porção: ${i.porcao}<br><br>
+
+    Kcal: ${i.energia_kcal}<br>
+    Carboidrato: ${i.carboidrato}<br>
+    Proteína: ${i.proteina}<br>
+    Gordura: ${i.gordura}<br>
+    Fibra: ${i.fibra}<br>
+    Colesterol: ${i.colesterol}<br><br>
+
+    Cálcio: ${i.calcio}<br>
+    Sódio: ${i.sodio}<br>
+    Magnésio: ${i.magnesio}
   `;
 }
 
-// FORM
+// 🧾 PEGAR CAMPOS
 function pegarCampos(){
-  return{
-    nome:nome.value,
-    categoria:categoria.value,
-    porcao:porcao.value,
-    energia_kcal:Number(energia_kcal.value),
-    carboidrato:Number(carboidrato.value),
-    proteina:Number(proteina.value),
-    gordura:Number(gordura.value),
-    fibra:Number(fibra.value),
-    colesterol:Number(colesterol.value),
-    calcio:Number(calcio.value),
-    sodio:Number(sodio.value),
-    magnesio:Number(magnesio.value),
-    classificacao:classificacao.value
+  return {
+    nome: nome.value,
+    categoria: categoria.value,
+    porcao: porcao.value,
+    energia_kcal: Number(energia_kcal.value),
+    carboidrato: Number(carboidrato.value),
+    proteina: Number(proteina.value),
+    gordura: Number(gordura.value),
+    fibra: Number(fibra.value),
+    colesterol: Number(colesterol.value),
+    calcio: Number(calcio.value),
+    sodio: Number(sodio.value),
+    magnesio: Number(magnesio.value),
+    classificacao: classificacao.value
   };
 }
 
+// ✏️ PREENCHER FORM
 function preencherCampos(i){
-  nome.value=i.nome||"";
-  categoria.value=i.categoria||"";
-  porcao.value=i.porcao||"";
-  energia_kcal.value=i.energia_kcal||0;
-  carboidrato.value=i.carboidrato||0;
-  proteina.value=i.proteina||0;
-  gordura.value=i.gordura||0;
-  fibra.value=i.fibra||0;
-  colesterol.value=i.colesterol||0;
-  calcio.value=i.calcio||0;
-  sodio.value=i.sodio||0;
-  magnesio.value=i.magnesio||0;
+  nome.value = i.nome || "";
+  categoria.value = i.categoria || "";
+  porcao.value = i.porcao || "";
+  energia_kcal.value = i.energia_kcal || 0;
+  carboidrato.value = i.carboidrato || 0;
+  proteina.value = i.proteina || 0;
+  gordura.value = i.gordura || 0;
+  fibra.value = i.fibra || 0;
+  colesterol.value = i.colesterol || 0;
+  calcio.value = i.calcio || 0;
+  sodio.value = i.sodio || 0;
+  magnesio.value = i.magnesio || 0;
 }
 
-// CRUD
+// ➕ INCLUIR
 async function incluir(){
-  await db.collection("alimentos").add(pegarCampos());
+  const dados = pegarCampos();
+
+  const id = dados.nome.toLowerCase().replace(/\s+/g, "_");
+
+  await db.collection("alimentos").doc(id).set(dados);
+
   limpar();
   carregarAlimentos();
 }
 
+// ✏️ ALTERAR
 async function alterar(){
-  if(!idSelecionado) return alert("Selecione!");
+  if(!idSelecionado) return alert("Selecione um item!");
+
   await db.collection("alimentos").doc(idSelecionado).update(pegarCampos());
+
   limpar();
   carregarAlimentos();
 }
 
+// ❌ EXCLUIR
 async function excluir(){
-  if(!idSelecionado) return alert("Selecione!");
+  if(!idSelecionado) return alert("Selecione um item!");
+
   await db.collection("alimentos").doc(idSelecionado).delete();
+
   limpar();
   carregarAlimentos();
 }
 
+// 🧹 LIMPAR CAMPOS
 function limpar(){
-  document.querySelectorAll("input").forEach(i=>i.value="");
-  idSelecionado=null;
+  document.querySelectorAll("input").forEach(i => i.value = "");
+  idSelecionado = null;
 }
 
-// BUSCA
+// 🔍 BUSCAR
 async function buscar(){
   const t = busca.value.toLowerCase();
   const lista = document.getElementById("lista");
-  lista.innerHTML="";
+  lista.innerHTML = "";
 
   const snap = await db.collection("alimentos").get();
 
   snap.forEach(doc=>{
     const i = doc.data();
     if(i.nome.toLowerCase().includes(t)){
-      const tr=document.createElement("tr");
-      tr.innerHTML=`<td></td><td>${i.nome}</td><td>${i.energia_kcal}</td>`;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td></td><td>${i.nome}</td><td>${i.energia_kcal}</td>`;
       lista.appendChild(tr);
     }
   });
 }
 
-// IMPORTAR BASE
-async function importarBaseGrande() {
+// 🚀 IMPORTAR BASE GRANDE (SEM DUPLICAR)
+async function importarBaseGrande(){
   const r = await fetch("base500.json");
   const dados = await r.json();
 
   const chunkSize = 50;
 
-  for (let i = 0; i < dados.length; i += chunkSize) {
+  for(let i = 0; i < dados.length; i += chunkSize){
     const batch = db.batch();
 
-    dados.slice(i, i + chunkSize).forEach(item => {
-      const ref = db.collection("alimentos").doc();
-      batch.set(ref, item);
+    dados.slice(i, i + chunkSize).forEach(item=>{
+      const id = item.nome.toLowerCase().replace(/\s+/g, "_");
+      const ref = db.collection("alimentos").doc(id);
+
+      batch.set(ref, item, { merge: true });
     });
 
     await batch.commit();
   }
 
-  alert("Base grande importada!");
+  alert("Base importada sem duplicar!");
   carregarAlimentos();
 }
 
-  alert("Base grande importada!");
-  carregarAlimentos();
-}
-
-
-async function limparBase() {
-  if (!confirm("Tem certeza que deseja apagar TODOS os alimentos?")) return;
+// 🧹 LIMPAR BASE COMPLETA
+async function limparBase(){
+  if (!confirm("Apagar TODOS os alimentos?")) return;
 
   const snap = await db.collection("alimentos").get();
 
@@ -210,13 +226,11 @@ async function limparBase() {
     }
   }
 
-  if (count > 0) {
-    await batch.commit();
-  }
+  if (count > 0) await batch.commit();
 
   alert("Base limpa!");
   carregarAlimentos();
 }
 
-// INIT
+// 🚀 INICIAR
 carregarAlimentos();
