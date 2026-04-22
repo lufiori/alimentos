@@ -147,7 +147,7 @@
 <button onclick="importarBase('base4.json')">🥛 Laticínios</button>
 <button onclick="importarBase('base5.json')">🍔 Industrializados</button>
 <br>
-<button onclick="normalizarBanco()">🔥 Normalizar Base (FULL)</button>
+<button id="btnNormalizar">🔥 Normalizar Base (FULL)</button>
     
   </div>
 
@@ -193,5 +193,10 @@
 
 <script src="app.js"></script>
 
+<script>
+document.getElementById("btnNormalizar").addEventListener("click", normalizarBanco);
+</script>
+
+  
 </body>
 </html>
