@@ -1,7 +1,27 @@
-
 [
-{"nome":"Leite integral","categoria":"Laticínios","porcao":"100g","energia_kcal":61,"gordura":3.3,"classificacao":"moderado"},
-{"nome":"Leite desnatado","categoria":"Laticínios","porcao":"100g","energia_kcal":34,"classificacao":"bom"},
-{"nome":"Queijo","categoria":"Laticínios","porcao":"100g","energia_kcal":402,"gordura":33,"classificacao":"evitar"},
-{"nome":"Iogurte natural","categoria":"Laticínios","porcao":"100g","energia_kcal":59,"classificacao":"bom"}
+{"nome":"Leite integral","categoria":"Laticínios","porcao":"100ml","energia_kcal":61,"carboidrato":5,"proteina":3.2,"gordura":3.3,"fibra":0,"colesterol":10,"calcio":113,"sodio":43,"potassio":150,"vitamina_a":46,"vitamina_b2":0.18,"classificacao":"moderado"},
+{"nome":"Leite semi-desnatado","categoria":"Laticínios","porcao":"100ml","energia_kcal":46,"carboidrato":5,"proteina":3.3,"gordura":1.5,"fibra":0,"colesterol":8,"calcio":120,"sodio":44,"potassio":150,"classificacao":"bom"},
+{"nome":"Leite desnatado","categoria":"Laticínios","porcao":"100ml","energia_kcal":34,"carboidrato":5,"proteina":3.4,"gordura":0.1,"fibra":0,"colesterol":5,"calcio":124,"sodio":44,"potassio":150,"classificacao":"bom"},
+
+{"nome":"Leite em pó integral","categoria":"Laticínios","porcao":"100g","energia_kcal":496,"carboidrato":38,"proteina":26,"gordura":27,"fibra":0,"colesterol":97,"calcio":912,"sodio":371,"classificacao":"moderado"},
+{"nome":"Leite em pó desnatado","categoria":"Laticínios","porcao":"100g","energia_kcal":360,"carboidrato":52,"proteina":36,"gordura":1,"fibra":0,"colesterol":20,"calcio":1250,"sodio":535,"classificacao":"bom"},
+
+{"nome":"Iogurte natural integral","categoria":"Laticínios","porcao":"100g","energia_kcal":61,"carboidrato":4.7,"proteina":3.5,"gordura":3.3,"fibra":0,"colesterol":13,"calcio":121,"sodio":46,"classificacao":"moderado"},
+{"nome":"Iogurte natural desnatado","categoria":"Laticínios","porcao":"100g","energia_kcal":41,"carboidrato":5,"proteina":3.8,"gordura":0.4,"fibra":0,"colesterol":5,"calcio":140,"sodio":50,"classificacao":"bom"},
+{"nome":"Iogurte grego","categoria":"Laticínios","porcao":"100g","energia_kcal":97,"carboidrato":3.9,"proteina":9,"gordura":5,"fibra":0,"colesterol":20,"calcio":110,"classificacao":"moderado"},
+
+{"nome":"Queijo mussarela","categoria":"Laticínios","porcao":"100g","energia_kcal":300,"carboidrato":3,"proteina":22,"gordura":22,"fibra":0,"colesterol":79,"calcio":505,"sodio":600,"classificacao":"evitar"},
+{"nome":"Queijo prato","categoria":"Laticínios","porcao":"100g","energia_kcal":360,"carboidrato":2,"proteina":23,"gordura":29,"fibra":0,"colesterol":90,"calcio":700,"sodio":700,"classificacao":"evitar"},
+{"nome":"Queijo cheddar","categoria":"Laticínios","porcao":"100g","energia_kcal":402,"carboidrato":1.3,"proteina":25,"gordura":33,"fibra":0,"colesterol":105,"calcio":721,"sodio":621,"classificacao":"evitar"},
+{"nome":"Queijo parmesão","categoria":"Laticínios","porcao":"100g","energia_kcal":431,"carboidrato":4,"proteina":36,"gordura":29,"fibra":0,"colesterol":88,"calcio":1184,"sodio":1529,"classificacao":"evitar"},
+{"nome":"Queijo minas frescal","categoria":"Laticínios","porcao":"100g","energia_kcal":264,"carboidrato":3,"proteina":17,"gordura":21,"fibra":0,"colesterol":70,"calcio":579,"sodio":400,"classificacao":"moderado"},
+{"nome":"Queijo cottage","categoria":"Laticínios","porcao":"100g","energia_kcal":98,"carboidrato":3,"proteina":11,"gordura":4,"fibra":0,"colesterol":17,"calcio":83,"sodio":364,"classificacao":"bom"},
+{"nome":"Queijo ricota","categoria":"Laticínios","porcao":"100g","energia_kcal":174,"carboidrato":3,"proteina":11,"gordura":13,"fibra":0,"colesterol":51,"calcio":207,"sodio":84,"classificacao":"moderado"},
+
+{"nome":"Manteiga","categoria":"Laticínios","porcao":"100g","energia_kcal":717,"carboidrato":0,"proteina":0.9,"gordura":81,"fibra":0,"colesterol":215,"calcio":24,"sodio":11,"classificacao":"evitar"},
+{"nome":"Margarina","categoria":"Laticínios","porcao":"100g","energia_kcal":717,"carboidrato":0,"proteina":0.2,"gordura":81,"fibra":0,"colesterol":0,"sodio":700,"classificacao":"evitar"},
+
+{"nome":"Requeijão","categoria":"Laticínios","porcao":"100g","energia_kcal":257,"carboidrato":3,"proteina":9,"gordura":23,"fibra":0,"colesterol":60,"calcio":259,"sodio":600,"classificacao":"evitar"},
+{"nome":"Creme de leite","categoria":"Laticínios","porcao":"100g","energia_kcal":340,"carboidrato":3,"proteina":2,"gordura":35,"fibra":0,"colesterol":110,"classificacao":"evitar"},
+{"nome":"Leite condensado","categoria":"Laticínios","porcao":"100g","energia_kcal":321,"carboidrato":54,"proteina":8,"gordura":8.7,"fibra":0,"colesterol":34,"classificacao":"evitar"}
 ]
