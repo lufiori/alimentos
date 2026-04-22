@@ -11,42 +11,51 @@ const firebaseConfig = {
   measurementId: "G-PPTQ4Y39FZ"
 };
 
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 let idSelecionado = null;
 
-function corClassificacao(c) {
-  if (c === "bom") return "green";
-  if (c === "moderado") return "orange";
-  if (c === "evitar") return "red";
+function corClassificacao(c){
+  if(c==="bom") return "green";
+  if(c==="moderado") return "orange";
+  if(c==="evitar") return "red";
   return "gray";
 }
 
 // LISTAR
-async function carregarAlimentos() {
+async function carregarAlimentos(){
   const lista = document.getElementById("lista");
-  lista.innerHTML = "";
+  lista.innerHTML="";
 
   const snap = await db.collection("alimentos").get();
 
-  snap.forEach(doc => {
-    const item = doc.data();
+  snap.forEach(doc=>{
+    const i = doc.data();
 
     const tr = document.createElement("tr");
 
-    tr.innerHTML = `
-      <td><span class="bolinha" style="background:${corClassificacao(item.classificacao)}"></span></td>
-      <td>${item.nome}</td>
-      <td>${item.energia_kcal}</td>
-      <td>${item.proteina}</td>
-      <td>${item.gordura}</td>
+    tr.innerHTML=`
+      <td><span class="bolinha" style="background:${corClassificacao(i.classificacao)}"></span></td>
+      <td>${i.nome||""}</td>
+      <td>${i.categoria||""}</td>
+      <td>${i.energia_kcal||0}</td>
+      <td>${i.carboidrato||0}</td>
+      <td>${i.proteina||0}</td>
+      <td>${i.gordura||0}</td>
+      <td>${i.fibra||0}</td>
+      <td>${i.colesterol||0}</td>
+      <td>${i.calcio||0}</td>
+      <td>${i.sodio||0}</td>
+      <td>${i.magnesio||0}</td>
+      <td>${i.porcao||""}</td>
     `;
 
-    tr.onclick = () => {
+    tr.onclick=()=>{
       idSelecionado = doc.id;
-      mostrarDetalhe(item);
-      preencherCampos(item);
+      preencherCampos(i);
+      mostrarDetalhe(i);
     };
 
     lista.appendChild(tr);
@@ -54,110 +63,122 @@ async function carregarAlimentos() {
 }
 
 // DETALHE
-function mostrarDetalhe(item) {
+function mostrarDetalhe(i){
   const d = document.getElementById("detalhe");
-  d.style.display = "block";
+  d.style.display="block";
 
-  d.innerHTML = `
-    <h2>${item.nome}</h2>
-    <p><b>Categoria:</b> ${item.categoria}</p>
+  d.innerHTML=`
+    <h2>${i.nome}</h2>
+    <p><b>Categoria:</b> ${i.categoria}</p>
     <hr>
     <div class="grid-detalhe">
-      <div>Kcal: ${item.energia_kcal}</div>
-      <div>Carb: ${item.carboidrato}</div>
-      <div>Prot: ${item.proteina}</div>
-      <div>Gord: ${item.gordura}</div>
-      <div>Fibra: ${item.fibra}</div>
-      <div>Colest: ${item.colesterol}</div>
-      <div>Cálcio: ${item.calcio}</div>
-      <div>Sódio: ${item.sodio}</div>
-      <div>Magnésio: ${item.magnesio}</div>
+      <div>Kcal: ${i.energia_kcal}</div>
+      <div>Carboidrato: ${i.carboidrato}</div>
+      <div>Proteína: ${i.proteina}</div>
+      <div>Gordura: ${i.gordura}</div>
+      <div>Fibra: ${i.fibra}</div>
+      <div>Colesterol: ${i.colesterol}</div>
+      <div>Cálcio: ${i.calcio}</div>
+      <div>Sódio: ${i.sodio}</div>
+      <div>Magnésio: ${i.magnesio}</div>
     </div>
   `;
 }
 
+// FORM
+function pegarCampos(){
+  return{
+    nome:nome.value,
+    categoria:categoria.value,
+    porcao:porcao.value,
+    energia_kcal:Number(energia_kcal.value),
+    carboidrato:Number(carboidrato.value),
+    proteina:Number(proteina.value),
+    gordura:Number(gordura.value),
+    fibra:Number(fibra.value),
+    colesterol:Number(colesterol.value),
+    calcio:Number(calcio.value),
+    sodio:Number(sodio.value),
+    magnesio:Number(magnesio.value),
+    classificacao:classificacao.value
+  };
+}
+
+function preencherCampos(i){
+  nome.value=i.nome||"";
+  categoria.value=i.categoria||"";
+  porcao.value=i.porcao||"";
+  energia_kcal.value=i.energia_kcal||0;
+  carboidrato.value=i.carboidrato||0;
+  proteina.value=i.proteina||0;
+  gordura.value=i.gordura||0;
+  fibra.value=i.fibra||0;
+  colesterol.value=i.colesterol||0;
+  calcio.value=i.calcio||0;
+  sodio.value=i.sodio||0;
+  magnesio.value=i.magnesio||0;
+}
+
 // CRUD
-async function incluir() {
-  const dados = pegarCampos();
-  await db.collection("alimentos").add(dados);
+async function incluir(){
+  await db.collection("alimentos").add(pegarCampos());
   limpar();
   carregarAlimentos();
 }
 
-async function alterar() {
-  if (!idSelecionado) return alert("Selecione um item");
+async function alterar(){
+  if(!idSelecionado) return alert("Selecione!");
   await db.collection("alimentos").doc(idSelecionado).update(pegarCampos());
   limpar();
   carregarAlimentos();
 }
 
-async function excluir() {
-  if (!idSelecionado) return alert("Selecione um item");
+async function excluir(){
+  if(!idSelecionado) return alert("Selecione!");
   await db.collection("alimentos").doc(idSelecionado).delete();
   limpar();
   carregarAlimentos();
 }
 
-// FORM
-function pegarCampos() {
-  return {
-    nome: nome.value,
-    categoria: categoria.value,
-    porcao: porcao.value,
-    energia_kcal: Number(energia_kcal.value),
-    carboidrato: Number(carboidrato.value),
-    proteina: Number(proteina.value),
-    gordura: Number(gordura.value),
-    fibra: Number(fibra.value),
-    colesterol: Number(colesterol.value),
-    calcio: Number(calcio.value),
-    sodio: Number(sodio.value),
-    magnesio: Number(magnesio.value),
-    classificacao: classificacao.value
-  };
-}
-
-function preencherCampos(i) {
-  nome.value = i.nome;
-}
-
-function limpar() {
-  document.querySelectorAll("input").forEach(i => i.value = "");
-  idSelecionado = null;
+function limpar(){
+  document.querySelectorAll("input").forEach(i=>i.value="");
+  idSelecionado=null;
 }
 
 // BUSCA
-async function buscar() {
-  const texto = busca.value.toLowerCase();
+async function buscar(){
+  const t = busca.value.toLowerCase();
   const lista = document.getElementById("lista");
-  lista.innerHTML = "";
+  lista.innerHTML="";
 
   const snap = await db.collection("alimentos").get();
 
-  snap.forEach(doc => {
-    const item = doc.data();
-    if (item.nome.toLowerCase().includes(texto)) {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td></td><td>${item.nome}</td><td>${item.energia_kcal}</td>`;
+  snap.forEach(doc=>{
+    const i = doc.data();
+    if(i.nome.toLowerCase().includes(t)){
+      const tr=document.createElement("tr");
+      tr.innerHTML=`<td></td><td>${i.nome}</td><td>${i.energia_kcal}</td>`;
       lista.appendChild(tr);
     }
   });
 }
 
-// BASE PRONTA
-async function carregarBase() {
-  const base = [
-    {nome:"Abacate",categoria:"Frutas",energia_kcal:96,carboidrato:6,proteina:1.2,gordura:8.4,fibra:6,calcio:8,sodio:1,magnesio:29,colesterol:0,classificacao:"bom"},
-    {nome:"Arroz",categoria:"Grãos",energia_kcal:130,carboidrato:28,proteina:2.5,gordura:0.3,fibra:0.4,calcio:10,sodio:1,magnesio:12,colesterol:0,classificacao:"moderado"},
-    {nome:"Frango",categoria:"Carnes",energia_kcal:165,carboidrato:0,proteina:31,gordura:3.6,fibra:0,calcio:15,sodio:74,magnesio:25,colesterol:85,classificacao:"bom"}
-  ];
+// IMPORTAR BASE
+async function importarBaseGrande(){
+  const r = await fetch("base500.json");
+  const dados = await r.json();
 
-  for (const a of base) {
-    await db.collection("alimentos").add(a);
-  }
+  const batch = db.batch();
 
+  dados.forEach(item=>{
+    const ref = db.collection("alimentos").doc();
+    batch.set(ref,item);
+  });
+
+  await batch.commit();
+
+  alert("Base importada!");
   carregarAlimentos();
-  alert("Base carregada!");
 }
 
 // INIT
