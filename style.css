@@ -51,6 +51,22 @@ tr:hover {
 
 .bolinha {
   width: 12px;
+
+
+  
+.card-detalhe {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.grid-detalhe {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}  
   height: 12px;
   border-radius: 50%;
   display: inline-block;
