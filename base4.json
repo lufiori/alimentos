@@ -1,1 +1,7 @@
 
+[
+{"nome":"Leite integral","categoria":"Laticínios","porcao":"100g","energia_kcal":61,"gordura":3.3,"classificacao":"moderado"},
+{"nome":"Leite desnatado","categoria":"Laticínios","porcao":"100g","energia_kcal":34,"classificacao":"bom"},
+{"nome":"Queijo","categoria":"Laticínios","porcao":"100g","energia_kcal":402,"gordura":33,"classificacao":"evitar"},
+{"nome":"Iogurte natural","categoria":"Laticínios","porcao":"100g","energia_kcal":59,"classificacao":"bom"}
+]
