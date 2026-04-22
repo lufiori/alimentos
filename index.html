@@ -1,217 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="UTF-8">
-  <title>App Nutricional</title>
+<meta charset="UTF-8">
+<title>App Nutricional</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      margin: 20px;
-      background: #f5f6fa;
-    }
+<style>
+body {
+  font-family: Arial;
+  margin: 20px;
+}
 
-    h1 {
-      text-align: center;
-    }
+/* GRID DAS CATEGORIAS */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
 
-    .container {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
+.card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
+.card:hover {
+  background: #f0f0f0;
+}
 
-    input, select {
-      padding: 8px;
-      width: 100%;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+/* ESCONDER TELAS */
+.tela {
+  display: none;
+}
 
-    button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      background: #3498db;
-      color: white;
-    }
+.ativa {
+  display: block;
+}
 
-    button:hover {
-      background: #2980b9;
-    }
+/* BOTÃO VOLTAR */
+.voltar {
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+</style>
 
-    .acoes {
-      margin-top: 10px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .tabela-container {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      min-width: 1200px;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 8px;
-      border: 1px solid #ddd;
-      text-align: center;
-    }
-
-    th {
-      background: #eee;
-      position: sticky;
-      top: 0;
-    }
-
-    tr:hover {
-      background: #f1f1f1;
-      cursor: pointer;
-    }
-
-    .bolinha {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .detalhes {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-  </style>
 </head>
 
 <body>
 
 <h1>🍎 App Nutricional</h1>
 
-<div class="container">
+<!-- 🔥 TELA 1 (CATEGORIAS) -->
+<div id="tela1" class="tela ativa">
+
+  <h2>Grupos alimentares</h2>
 
   <div class="grid">
-    <input id="nome" placeholder="Nome">
-    <input id="categoria" placeholder="Categoria">
-    <input id="porcao" placeholder="Porção (100g)">
-
-    <input id="energia_kcal" placeholder="Kcal">
-    <input id="carboidrato" placeholder="Carboidrato">
-    <input id="proteina" placeholder="Proteína">
-
-    <input id="gordura" placeholder="Gordura">
-    <input id="fibra" placeholder="Fibra">
-    <input id="colesterol" placeholder="Colesterol">
-
-    <input id="calcio" placeholder="Cálcio">
-    <input id="sodio" placeholder="Sódio">
-    <input id="magnesio" placeholder="Magnésio">
+    <div class="card" onclick="abrirCategoria('Frutas')">🍎 Frutas</div>
+    <div class="card" onclick="abrirCategoria('Legumes')">🥦 Legumes</div>
+    <div class="card" onclick="abrirCategoria('Grãos')">🌾 Grãos</div>
+    <div class="card" onclick="abrirCategoria('Carnes')">🍗 Carnes</div>
+    <div class="card" onclick="abrirCategoria('Laticínios')">🥛 Laticínios</div>
+    <div class="card" onclick="abrirCategoria('Industrializados')">🍔 Industrializados</div>
   </div>
-
-  <br>
-
-  <select id="classificacao">
-    <option value="bom">🟢 Bom</option>
-    <option value="moderado">🟡 Moderado</option>
-    <option value="evitar">🔴 Evitar</option>
-  </select>
-
-  <div class="acoes">
-    <button onclick="incluir()">Incluir</button>
-    <button onclick="alterar()">Alterar</button>
-    <button onclick="excluir()">Excluir</button>
-    
-    <button onclick="limparBase()">🧹 Limpar Base</button>
-<br>
-<button onclick="importarBase('base1.json')">🍎 Frutas</button>
-<button onclick="importarBase('base6.json')">🥦 Legumes</button>    
-<button onclick="importarBase('base2.json')">🌾 Grãos</button>
-<button onclick="importarBase('base3.json')">🍗 Carnes</button>
-<button onclick="importarBase('base4.json')">🥛 Laticínios</button>
-<button onclick="importarBase('base5.json')">🍔 Industrializados</button>
-<br>
-<button id="btnNormalizar">🔥 Normalizar Base (FULL)</button>
-    
-  </div>
-
-  <br>
-
-  <input id="busca" placeholder="Buscar..." onkeyup="buscar()">
 
 </div>
 
-<!-- TABELA -->
-<div class="container tabela-container">
-  <table>
+
+<!-- 🔥 TELA 2 (LISTA) -->
+<div id="tela2" class="tela">
+
+  <div class="voltar" onclick="voltar()">⬅ Voltar</div>
+
+  <h2 id="tituloCategoria"></h2>
+
+  <input type="text" id="busca" placeholder="Buscar..." onkeyup="buscarCategoria()">
+
+  <table border="1" width="100%">
     <thead>
       <tr>
-        <th></th>
         <th>Nome</th>
-        <th>Categoria</th>
         <th>Kcal</th>
         <th>Carb</th>
         <th>Prot</th>
         <th>Gord</th>
-        <th>Fibra</th>
-        <th>Colest</th>
-        <th>Cálcio</th>
-        <th>Sódio</th>
-        <th>Magnésio</th>
-        <th>Porção</th>
       </tr>
     </thead>
     <tbody id="lista"></tbody>
   </table>
+
 </div>
 
-<div id="detalhe" style="margin-top:20px; padding:15px; border-radius:10px; background:#f5f5f5; display:none;">
-  <h2 id="d_nome"></h2>
-
-  <p><strong>🔥 Calorias:</strong> <span id="d_kcal"></span> kcal</p>
-
-  <h3>Macronutrientes</h3>
-  <p>Carboidrato: <span id="d_carbo"></span> g</p>
-  <p>Proteína: <span id="d_prot"></span> g</p>
-  <p>Gordura: <span id="d_gord"></span> g</p>
-  <p>Fibra: <span id="d_fibra"></span> g</p>
-
-  <h3>Vitaminas</h3>
-  <p>A: <span id="d_va"></span></p>
-  <p>C: <span id="d_vc"></span></p>
-  <p>B6: <span id="d_vb6"></span></p>
-
-  <h3>Minerais</h3>
-  <p>Cálcio: <span id="d_calc"></span></p>
-  <p>Ferro: <span id="d_ferro"></span></p>
-  <p>Potássio: <span id="d_pot"></span></p>
-
-  <h3 id="d_class"></h3>
-</div>
-
-
-  
-<!-- DETALHES -->
-<div class="detalhes" id="detalhes">
-  <h2 id="detNome">Selecione um alimento</h2>
-  <p id="detInfo"></p>
-</div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -219,10 +100,5 @@
 
 <script src="app.js"></script>
 
-<script>
-document.getElementById("btnNormalizar").addEventListener("click", normalizarBanco);
-</script>
-
-  
 </body>
 </html>
