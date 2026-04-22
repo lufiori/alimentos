@@ -336,5 +336,59 @@ async function normalizarBanco() {
 }
 
 
+
+
+
+function mostrarDetalhe(item){
+  document.getElementById("detalhe").style.display = "block";
+
+  document.getElementById("d_nome").innerText = item.nome;
+
+  document.getElementById("d_kcal").innerText = item.energia_kcal || 0;
+
+  document.getElementById("d_carbo").innerText = item.carboidrato || 0;
+  document.getElementById("d_prot").innerText = item.proteina || 0;
+  document.getElementById("d_gord").innerText = item.gordura || 0;
+  document.getElementById("d_fibra").innerText = item.fibra || 0;
+
+  document.getElementById("d_va").innerText = item.vitamina_a || 0;
+  document.getElementById("d_vc").innerText = item.vitamina_c || 0;
+  document.getElementById("d_vb6").innerText = item.vitamina_b6 || 0;
+
+  document.getElementById("d_calc").innerText = item.calcio || 0;
+  document.getElementById("d_ferro").innerText = item.ferro || 0;
+  document.getElementById("d_pot").innerText = item.potassio || 0;
+
+  let cor = "black";
+  let texto = "MODERADO";
+
+  if(item.classificacao === "bom"){
+    cor = "green";
+    texto = "BOM 🟢";
+  }
+
+  if(item.classificacao === "evitar"){
+    cor = "red";
+    texto = "EVITAR 🔴";
+  }
+
+  document.getElementById("d_class").innerText = texto;
+  document.getElementById("d_class").style.color = cor;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // START
 carregarAlimentos();
