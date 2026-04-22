@@ -1,0 +1,12 @@
+[
+{"nome":"Abacate","categoria":"Frutas","porcao":"100g","energia_kcal":96,"carboidrato":6,"proteina":1.2,"gordura":8.4,"fibra":6,"colesterol":0,"calcio":8,"magnesio":29,"fosforo":22,"potassio":485,"sodio":1,"ferro":0.6,"zinco":0.6,"vitamina_c":10,"classificacao":"bom"},
+{"nome":"Banana","categoria":"Frutas","porcao":"100g","energia_kcal":89,"carboidrato":23,"proteina":1.1,"gordura":0.3,"fibra":2.6,"potassio":358,"vitamina_c":9,"classificacao":"bom"},
+{"nome":"Maçã","categoria":"Frutas","porcao":"100g","energia_kcal":52,"carboidrato":14,"fibra":2.4,"vitamina_c":4,"classificacao":"bom"},
+{"nome":"Laranja","categoria":"Frutas","porcao":"100g","energia_kcal":47,"carboidrato":12,"fibra":2.2,"vitamina_c":53,"classificacao":"bom"},
+{"nome":"Manga","categoria":"Frutas","porcao":"100g","energia_kcal":60,"carboidrato":15,"vitamina_c":36,"classificacao":"bom"},
+{"nome":"Morango","categoria":"Frutas","porcao":"100g","energia_kcal":32,"carboidrato":8,"vitamina_c":59,"classificacao":"bom"},
+{"nome":"Uva","categoria":"Frutas","porcao":"100g","energia_kcal":69,"carboidrato":18,"classificacao":"moderado"},
+{"nome":"Abacaxi","categoria":"Frutas","porcao":"100g","energia_kcal":50,"carboidrato":13,"vitamina_c":47,"classificacao":"bom"},
+{"nome":"Pera","categoria":"Frutas","porcao":"100g","energia_kcal":57,"carboidrato":15,"fibra":3.1,"classificacao":"bom"},
+{"nome":"Melancia","categoria":"Frutas","porcao":"100g","energia_kcal":30,"carboidrato":8,"classificacao":"bom"}
+]
