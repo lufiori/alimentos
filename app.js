@@ -266,62 +266,74 @@ async function importarBase(nomeArquivo){
 
 
 
-
 async function normalizarBanco() {
-  const snapshot = await db.collection("alimentos").get();
+  try {
+    console.log("🔥 Iniciando normalização...");
 
-  for (let i = 0; i < snapshot.docs.length; i += 50) {
-    const batch = db.batch();
+    const snapshot = await db.collection("alimentos").get();
 
-    snapshot.docs.slice(i, i + 50).forEach(doc => {
-      const item = doc.data();
+    if (snapshot.empty) {
+      alert("❌ Banco vazio!");
+      return;
+    }
 
-      const modelo = {
-        nome: item.nome || "",
-        categoria: item.categoria || "",
-        porcao: item.porcao || "100g",
+    for (let i = 0; i < snapshot.docs.length; i += 50) {
+      const batch = db.batch();
 
-        energia_kcal: item.energia_kcal || item.calorias || 0,
-        carboidrato: item.carboidrato || 0,
-        proteina: item.proteina || 0,
-        gordura: item.gordura || 0,
-        fibra: item.fibra || 0,
+      snapshot.docs.slice(i, i + 50).forEach(doc => {
+        const item = doc.data();
 
-        calcio: item.calcio || 0,
-        ferro: item.ferro || 0,
-        magnesio: item.magnesio || 0,
-        fosforo: item.fosforo || 0,
-        potassio: item.potassio || 0,
-        sodio: item.sodio || 0,
-        zinco: item.zinco || 0,
+        const modelo = {
+          nome: item.nome || "",
+          categoria: item.categoria || "",
+          porcao: item.porcao || "100g",
 
-        vitamina_a: item.vitamina_a || 0,
-        vitamina_c: item.vitamina_c || 0,
-        vitamina_d: item.vitamina_d || 0,
-        vitamina_e: item.vitamina_e || 0,
-        vitamina_k: item.vitamina_k || 0,
-        vitamina_b1: item.vitamina_b1 || 0,
-        vitamina_b2: item.vitamina_b2 || 0,
-        vitamina_b3: item.vitamina_b3 || 0,
-        vitamina_b6: item.vitamina_b6 || 0,
-        vitamina_b12: item.vitamina_b12 || 0,
+          energia_kcal: item.energia_kcal || item.calorias || 0,
+          carboidrato: item.carboidrato || 0,
+          proteina: item.proteina || 0,
+          gordura: item.gordura || 0,
+          fibra: item.fibra || 0,
 
-        colesterol: item.colesterol || 0,
+          calcio: item.calcio || 0,
+          ferro: item.ferro || 0,
+          magnesio: item.magnesio || 0,
+          fosforo: item.fosforo || 0,
+          potassio: item.potassio || 0,
+          sodio: item.sodio || 0,
+          zinco: item.zinco || 0,
 
-        classificacao: item.classificacao || "moderado"
-      };
+          vitamina_a: item.vitamina_a || 0,
+          vitamina_c: item.vitamina_c || 0,
+          vitamina_d: item.vitamina_d || 0,
+          vitamina_e: item.vitamina_e || 0,
+          vitamina_k: item.vitamina_k || 0,
+          vitamina_b1: item.vitamina_b1 || 0,
+          vitamina_b2: item.vitamina_b2 || 0,
+          vitamina_b3: item.vitamina_b3 || 0,
+          vitamina_b6: item.vitamina_b6 || 0,
+          vitamina_b12: item.vitamina_b12 || 0,
 
-      batch.set(doc.ref, modelo, { merge: true });
-    });
+          colesterol: item.colesterol || 0,
 
-    await batch.commit();
+          classificacao: item.classificacao || "moderado"
+        };
+
+        batch.set(doc.ref, modelo, { merge: true });
+      });
+
+      await batch.commit();
+    }
+
+    console.log("✅ Finalizado!");
+    alert("🔥 Banco normalizado com sucesso!");
+
+    carregarAlimentos();
+
+  } catch (erro) {
+    console.error("ERRO:", erro);
+    alert("❌ Erro ao normalizar (veja o console)");
   }
-
-  alert("🔥 Banco normalizado com sucesso!");
-  carregarAlimentos();
 }
-
-
 
 
 // START
