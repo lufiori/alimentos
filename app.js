@@ -377,7 +377,81 @@ function mostrarDetalhe(item){
 
 
 
+let categoriaAtual = "";
 
+// 🔥 abrir categoria
+function abrirCategoria(cat) {
+  categoriaAtual = cat;
+
+  document.getElementById("tela1").classList.remove("ativa");
+  document.getElementById("tela2").classList.add("ativa");
+
+  document.getElementById("tituloCategoria").innerText = cat;
+
+  carregarCategoria();
+}
+
+// 🔙 voltar
+function voltar() {
+  document.getElementById("tela2").classList.remove("ativa");
+  document.getElementById("tela1").classList.add("ativa");
+}
+
+// 🔎 carregar categoria
+async function carregarCategoria() {
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  const snapshot = await db.collection("alimentos").get();
+
+  snapshot.forEach(doc => {
+    const item = doc.data();
+
+    if (item.categoria === categoriaAtual) {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${item.nome}</td>
+        <td>${item.energia_kcal || 0}</td>
+        <td>${item.carboidrato || 0}</td>
+        <td>${item.proteina || 0}</td>
+        <td>${item.gordura || 0}</td>
+      `;
+
+      lista.appendChild(tr);
+    }
+  });
+}
+
+// 🔎 busca dentro da categoria
+async function buscarCategoria() {
+  const texto = document.getElementById("busca").value.toLowerCase();
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  const snapshot = await db.collection("alimentos").get();
+
+  snapshot.forEach(doc => {
+    const item = doc.data();
+
+    if (
+      item.categoria === categoriaAtual &&
+      item.nome.toLowerCase().includes(texto)
+    ) {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${item.nome}</td>
+        <td>${item.energia_kcal || 0}</td>
+        <td>${item.carboidrato || 0}</td>
+        <td>${item.proteina || 0}</td>
+        <td>${item.gordura || 0}</td>
+      `;
+
+      lista.appendChild(tr);
+    }
+  });
+}
 
 
 
