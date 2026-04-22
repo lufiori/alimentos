@@ -16,209 +16,149 @@ const db = firebase.firestore();
 
 let idSelecionado = null;
 
-// 🔥 CARREGAR
+function corClassificacao(c) {
+  if (c === "bom") return "green";
+  if (c === "moderado") return "orange";
+  if (c === "evitar") return "red";
+  return "gray";
+}
+
+// LISTAR
 async function carregarAlimentos() {
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const snapshot = await db.collection("alimentos").orderBy("nome").get();
+  const snap = await db.collection("alimentos").get();
 
-  snapshot.forEach(doc => {
+  snap.forEach(doc => {
     const item = doc.data();
-
-    let cor = "gray";
-    if (item.classificacao === "bom") cor = "green";
-    if (item.classificacao === "moderado") cor = "orange";
-    if (item.classificacao === "evitar") cor = "red";
 
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td><span class="bolinha" style="background:${cor}"></span></td>
+      <td><span class="bolinha" style="background:${corClassificacao(item.classificacao)}"></span></td>
       <td>${item.nome}</td>
-      <td>${item.categoria}</td>
-      <td>${item.calorias}</td>
-      <td>${item.carboidrato}</td>
+      <td>${item.energia_kcal}</td>
       <td>${item.proteina}</td>
       <td>${item.gordura}</td>
-      <td>${item.fibra}</td>
-      <td>${item.colesterol}</td>
-      <td>${item.porcao}</td>
     `;
 
-    tr.onclick = () => selecionar(doc.id, item);
-
-    
-    
-    lista.appendChild(tr);
-
-
     tr.onclick = () => {
-      selecionar(doc.id, item);
+      idSelecionado = doc.id;
       mostrarDetalhe(item);
+      preencherCampos(item);
     };
-    
+
+    lista.appendChild(tr);
   });
 }
 
-// 🔍 BUSCAR
-async function buscar() {
-  const texto = document.getElementById("busca").value.toLowerCase();
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
+// DETALHE
+function mostrarDetalhe(item) {
+  const d = document.getElementById("detalhe");
+  d.style.display = "block";
 
-  const snapshot = await db.collection("alimentos").get();
-
-  snapshot.forEach(doc => {
-    const item = doc.data();
-
-    if (item.nome.toLowerCase().includes(texto)) {
-      const tr = document.createElement("tr");
-
-      tr.innerHTML = `
-        <td></td>
-        <td>${item.nome}</td>
-        <td>${item.categoria}</td>
-        <td>${item.calorias}</td>
-        <td>${item.carboidrato}</td>
-        <td>${item.proteina}</td>
-        <td>${item.gordura}</td>
-        <td>${item.fibra}</td>
-        <td>${item.colesterol}</td>
-        <td>${item.porcao}</td>
-      `;
-
-      tr.onclick = () => selecionar(doc.id, item);
-
-      lista.appendChild(tr);
-    }
-  });
+  d.innerHTML = `
+    <h2>${item.nome}</h2>
+    <p><b>Categoria:</b> ${item.categoria}</p>
+    <hr>
+    <div class="grid-detalhe">
+      <div>Kcal: ${item.energia_kcal}</div>
+      <div>Carb: ${item.carboidrato}</div>
+      <div>Prot: ${item.proteina}</div>
+      <div>Gord: ${item.gordura}</div>
+      <div>Fibra: ${item.fibra}</div>
+      <div>Colest: ${item.colesterol}</div>
+      <div>Cálcio: ${item.calcio}</div>
+      <div>Sódio: ${item.sodio}</div>
+      <div>Magnésio: ${item.magnesio}</div>
+    </div>
+  `;
 }
 
-// ➕ INCLUIR
+// CRUD
 async function incluir() {
-  const dados = pegarDados();
+  const dados = pegarCampos();
   await db.collection("alimentos").add(dados);
-
-  document.getElementById("status").innerText = "✅ Incluído!";
-  limparCampos();
+  limpar();
   carregarAlimentos();
 }
 
-// ✏️ ALTERAR
 async function alterar() {
   if (!idSelecionado) return alert("Selecione um item");
-
-  await db.collection("alimentos").doc(idSelecionado).update(pegarDados());
-
-  document.getElementById("status").innerText = "✏️ Alterado!";
-  limparCampos();
+  await db.collection("alimentos").doc(idSelecionado).update(pegarCampos());
+  limpar();
   carregarAlimentos();
 }
 
-// 🗑️ EXCLUIR
 async function excluir() {
   if (!idSelecionado) return alert("Selecione um item");
-
   await db.collection("alimentos").doc(idSelecionado).delete();
-
-  document.getElementById("status").innerText = "🗑️ Excluído!";
-  limparCampos();
+  limpar();
   carregarAlimentos();
 }
 
-// 📥 pegar dados
-function pegarDados() {
+// FORM
+function pegarCampos() {
   return {
     nome: nome.value,
     categoria: categoria.value,
     porcao: porcao.value,
-    calorias: Number(calorias.value),
+    energia_kcal: Number(energia_kcal.value),
     carboidrato: Number(carboidrato.value),
     proteina: Number(proteina.value),
     gordura: Number(gordura.value),
     fibra: Number(fibra.value),
     colesterol: Number(colesterol.value),
-    classificacao: classificacao.value || "moderado"
+    calcio: Number(calcio.value),
+    sodio: Number(sodio.value),
+    magnesio: Number(magnesio.value),
+    classificacao: classificacao.value
   };
 }
 
-// 👉 selecionar
-function selecionar(id, item) {
-  idSelecionado = id;
-
-  nome.value = item.nome;
-  categoria.value = item.categoria;
-  porcao.value = item.porcao;
-  calorias.value = item.calorias;
-  carboidrato.value = item.carboidrato;
-  proteina.value = item.proteina;
-  gordura.value = item.gordura;
-  fibra.value = item.fibra;
-  colesterol.value = item.colesterol;
-  classificacao.value = item.classificacao || "moderado";
+function preencherCampos(i) {
+  nome.value = i.nome;
 }
 
-// 👉 limpar
-function limparCampos() {
-  idSelecionado = null;
+function limpar() {
   document.querySelectorAll("input").forEach(i => i.value = "");
+  idSelecionado = null;
 }
 
-// 🚀 iniciar
-carregarAlimentos();
+// BUSCA
+async function buscar() {
+  const texto = busca.value.toLowerCase();
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
 
+  const snap = await db.collection("alimentos").get();
 
-
-async function atualizarCampos() {
-  const snapshot = await db.collection("alimentos").get();
-
-  snapshot.forEach(async (doc) => {
-    await db.collection("alimentos").doc(doc.id).update({
-      energia_kcal: 0,
-      energia_kj: 0,
-      carboidrato: 0,
-      proteina: 0,
-      gordura: 0,
-      fibra: 0,
-      colesterol: 0,
-      calcio: 0,
-      magnesio: 0,
-      ferro: 0,
-      sodio: 0,
-      cinzas: 0,
-      umidade: 0
-    });
+  snap.forEach(doc => {
+    const item = doc.data();
+    if (item.nome.toLowerCase().includes(texto)) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td></td><td>${item.nome}</td><td>${item.energia_kcal}</td>`;
+      lista.appendChild(tr);
+    }
   });
-
-  alert("Campos adicionados!");
 }
 
+// BASE PRONTA
+async function carregarBase() {
+  const base = [
+    {nome:"Abacate",categoria:"Frutas",energia_kcal:96,carboidrato:6,proteina:1.2,gordura:8.4,fibra:6,calcio:8,sodio:1,magnesio:29,colesterol:0,classificacao:"bom"},
+    {nome:"Arroz",categoria:"Grãos",energia_kcal:130,carboidrato:28,proteina:2.5,gordura:0.3,fibra:0.4,calcio:10,sodio:1,magnesio:12,colesterol:0,classificacao:"moderado"},
+    {nome:"Frango",categoria:"Carnes",energia_kcal:165,carboidrato:0,proteina:31,gordura:3.6,fibra:0,calcio:15,sodio:74,magnesio:25,colesterol:85,classificacao:"bom"}
+  ];
 
+  for (const a of base) {
+    await db.collection("alimentos").add(a);
+  }
 
-function mostrarDetalhe(item) {
-  const div = document.getElementById("detalhe");
-
-  div.style.display = "block";
-
-  div.innerHTML = `
-    <h2>${item.nome}</h2>
-    <p><strong>Grupo:</strong> ${item.categoria}</p>
-
-    <hr>
-
-    <div class="grid-detalhe">
-      <div><b>Energia:</b> ${item.energia_kcal} kcal</div>
-      <div><b>Carboidrato:</b> ${item.carboidrato} g</div>
-      <div><b>Proteína:</b> ${item.proteina} g</div>
-      <div><b>Gordura:</b> ${item.gordura} g</div>
-      <div><b>Fibra:</b> ${item.fibra} g</div>
-      <div><b>Colesterol:</b> ${item.colesterol} mg</div>
-      <div><b>Cálcio:</b> ${item.calcio} mg</div>
-      <div><b>Magnésio:</b> ${item.magnesio} mg</div>
-      <div><b>Sódio:</b> ${item.sodio} mg</div>
-      <div><b>Umidade:</b> ${item.umidade}%</div>
-    </div>
-  `;
+  carregarAlimentos();
+  alert("Base carregada!");
 }
 
+// INIT
+carregarAlimentos();
