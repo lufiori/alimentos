@@ -1,74 +1,171 @@
-<!-- SEU HTML COMPLETO COM AJUSTES APLICADOS -->
-<!-- (vou incluir apenas a parte alterada do JS + botão, o resto permanece EXATAMENTE igual ao que você mandou) -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>NutriTACO</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f5f5;
+  margin:0;
+}
+.top{
+  background:#2f8f46;
+  color:#fff;
+  padding:15px;
+  font-size:20px;
+}
+.container{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:15px;
+  padding:15px;
+}
+.card{
+  background:#fff;
+  padding:15px;
+  border-radius:10px;
+}
+input{
+  width:100%;
+  padding:10px;
+  margin-bottom:10px;
+}
+.food{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
+}
+.food:hover{
+  background:#f0f0f0;
+}
+.title{
+  font-weight:bold;
+}
+.label{
+  color:#666;
+  font-size:13px;
+}
+table{
+  width:100%;
+}
+td{
+  padding:5px;
+  border-bottom:1px solid #eee;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">🍎 NutriTACO</div>
+
+<div class="container">
+
+<!-- ESQUERDA -->
+<div class="card">
+
+<input type="file" id="file">
+
+<input type="text" id="busca" placeholder="Buscar alimento...">
+
+<div id="lista"></div>
+
+</div>
+
+<!-- DIREITA -->
+<div class="card">
+
+<h2 id="nome">Selecione um alimento</h2>
+<div id="grupo"></div>
+
+<h3>Macros</h3>
+<table>
+<tr><td>Calorias</td><td id="kcal"></td></tr>
+<tr><td>Proteína</td><td id="prot"></td></tr>
+<tr><td>Carbo</td><td id="carb"></td></tr>
+<tr><td>Gordura</td><td id="gord"></td></tr>
+</table>
+
+<h3>Vitaminas</h3>
+<table id="vit"></table>
+
+<h3>Minerais</h3>
+<table id="min"></table>
+
+</div>
+
+</div>
 
 <script>
-(function(){
 
-  // ... (TUDO IGUAL ATÉ renderListaAlimentos)
+let base = []
 
-  function renderListaAlimentos(items){
-    const alvo = el("listaAlimentos");
-    if(!items.length){
-      alvo.innerHTML = '<div class="food-item"><div class="muted">Nenhum alimento encontrado.</div></div>';
-      return;
-    }
-    alvo.innerHTML = items.map((a,i)=>`
-      <div class="food-item" data-idx="${i}">
-        <div>
-          <div class="food-name">${a.descricao_alimento}</div>
-          <div class="food-sub">${a.grupo} • ${fmt(a.energia_kcal,1)} kcal • P ${fmt(a.proteina_g,1)} g • C ${fmt(a.carboidrato_g,1)} g • G ${fmt(a.lipideos_g,1)} g</div>
-        </div>
-        <button class="btn-soft" onclick="event.stopPropagation()">Ver</button>
-      </div>
-    `).join("");
+const lista = document.getElementById("lista")
+const busca = document.getElementById("busca")
 
-    Array.from(alvo.querySelectorAll(".food-item")).forEach((node, idx)=>{
-      node.addEventListener("click", ()=>selecionarAlimento(items[idx]));
-    });
+// CARREGAR JSON
+document.getElementById("file").addEventListener("change", e=>{
+  const reader = new FileReader()
+  reader.onload = x=>{
+    base = JSON.parse(x.target.result)
+    render(base)
   }
+  reader.readAsText(e.target.files[0])
+})
 
-  // ... (TUDO IGUAL)
+// BUSCA
+busca.addEventListener("input", ()=>{
+  const t = busca.value.toLowerCase()
+  const filtrado = base.filter(a =>
+    a.descricao_alimento.toLowerCase().includes(t)
+  )
+  render(filtrado)
+})
 
-  function aplicarFiltros(){
-    const termo = el("busca").value.trim().toLowerCase();
-    const ordem = el("ordenarPor").value;
+// LISTA
+function render(arr){
+  lista.innerHTML = arr.slice(0,200).map(a=>`
+    <div class="food" onclick='abrir(${JSON.stringify(a)})'>
+      <div class="title">${a.descricao_alimento}</div>
+      <div class="label">${a.grupo} • ${a.energia_kcal?.toFixed(1)} kcal</div>
+    </div>
+  `).join("")
+}
 
-    let arr = (baseAtual || []).filter(a => !termo || String(a.descricao_alimento || "").toLowerCase().includes(termo));
+// ABRIR DETALHE
+function abrir(a){
 
-    if(ordem === "nome"){
-      arr.sort((a,b)=>String(a.descricao_alimento).localeCompare(String(b.descricao_alimento), 'pt-BR'));
-    }else if(ordem === "energiaAsc"){
-      arr.sort((a,b)=>num(a.energia_kcal) - num(b.energia_kcal));
-    }else if(ordem === "energiaDesc"){
-      arr.sort((a,b)=>num(b.energia_kcal) - num(a.energia_kcal));
-    }else if(ordem === "proteinaDesc"){
-      arr.sort((a,b)=>num(b.proteina_g) - num(a.proteina_g));
-    }
+document.getElementById("nome").innerText = a.descricao_alimento
+document.getElementById("grupo").innerText = a.grupo
 
-    el("contadorAlimentos").textContent =
-      `${arr.length} alimentos encontrados (mostrando ${Math.min(arr.length,150)})`;
+document.getElementById("kcal").innerText = a.energia_kcal?.toFixed(1)
+document.getElementById("prot").innerText = a.proteina_g?.toFixed(1)
+document.getElementById("carb").innerText = a.carboidrato_g?.toFixed(1)
+document.getElementById("gord").innerText = a.lipideos_g?.toFixed(1)
 
-    renderListaAlimentos(arr.slice(0,150));
-  }
+// vitaminas
+document.getElementById("vit").innerHTML = `
+<tr><td>Vit C</td><td>${a.vitamina_c_mg || "-"}</td></tr>
+<tr><td>Tiamina</td><td>${a.tiamina_mg || "-"}</td></tr>
+<tr><td>Riboflavina</td><td>${a.riboflavina_mg || "-"}</td></tr>
+<tr><td>Niacina</td><td>${a.niacina_mg || "-"}</td></tr>
+<tr><td>B6</td><td>${a.piridoxina_mg || "-"}</td></tr>
+`
 
-  // ... (TUDO IGUAL ATÉ bind)
+// minerais
+document.getElementById("min").innerHTML = `
+<tr><td>Cálcio</td><td>${a.calcio_mg || "-"}</td></tr>
+<tr><td>Ferro</td><td>${a.ferro_mg || "-"}</td></tr>
+<tr><td>Magnésio</td><td>${a.magnesio_mg || "-"}</td></tr>
+<tr><td>Zinco</td><td>${a.zinco_mg || "-"}</td></tr>
+<tr><td>Sódio</td><td>${a.sodio_mg || "-"}</td></tr>
+<tr><td>Potássio</td><td>${a.potassio_mg || "-"}</td></tr>
+`
+}
 
-  function bind(){
-    el("dataDiario").value = hoje;
-
-    el("busca").addEventListener("input", aplicarFiltros);
-    el("ordenarPor").addEventListener("change", aplicarFiltros);
-
-    el("grupoSelect").addEventListener("change", async ()=>{
-      const val = el("grupoSelect").value;
-      if(val === "__manual__") return;
-      await carregarGrupoSelecionado();
-    });
-
-    // resto igual...
-  }
-
-  // ... (RESTO DO CÓDIGO EXATAMENTE IGUAL)
-
-})();
 </script>
+
+</body>
+</html>
