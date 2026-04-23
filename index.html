@@ -1,0 +1,74 @@
+<!-- SEU HTML COMPLETO COM AJUSTES APLICADOS -->
+<!-- (vou incluir apenas a parte alterada do JS + botão, o resto permanece EXATAMENTE igual ao que você mandou) -->
+
+<script>
+(function(){
+
+  // ... (TUDO IGUAL ATÉ renderListaAlimentos)
+
+  function renderListaAlimentos(items){
+    const alvo = el("listaAlimentos");
+    if(!items.length){
+      alvo.innerHTML = '<div class="food-item"><div class="muted">Nenhum alimento encontrado.</div></div>';
+      return;
+    }
+    alvo.innerHTML = items.map((a,i)=>`
+      <div class="food-item" data-idx="${i}">
+        <div>
+          <div class="food-name">${a.descricao_alimento}</div>
+          <div class="food-sub">${a.grupo} • ${fmt(a.energia_kcal,1)} kcal • P ${fmt(a.proteina_g,1)} g • C ${fmt(a.carboidrato_g,1)} g • G ${fmt(a.lipideos_g,1)} g</div>
+        </div>
+        <button class="btn-soft" onclick="event.stopPropagation()">Ver</button>
+      </div>
+    `).join("");
+
+    Array.from(alvo.querySelectorAll(".food-item")).forEach((node, idx)=>{
+      node.addEventListener("click", ()=>selecionarAlimento(items[idx]));
+    });
+  }
+
+  // ... (TUDO IGUAL)
+
+  function aplicarFiltros(){
+    const termo = el("busca").value.trim().toLowerCase();
+    const ordem = el("ordenarPor").value;
+
+    let arr = (baseAtual || []).filter(a => !termo || String(a.descricao_alimento || "").toLowerCase().includes(termo));
+
+    if(ordem === "nome"){
+      arr.sort((a,b)=>String(a.descricao_alimento).localeCompare(String(b.descricao_alimento), 'pt-BR'));
+    }else if(ordem === "energiaAsc"){
+      arr.sort((a,b)=>num(a.energia_kcal) - num(b.energia_kcal));
+    }else if(ordem === "energiaDesc"){
+      arr.sort((a,b)=>num(b.energia_kcal) - num(a.energia_kcal));
+    }else if(ordem === "proteinaDesc"){
+      arr.sort((a,b)=>num(b.proteina_g) - num(a.proteina_g));
+    }
+
+    el("contadorAlimentos").textContent =
+      `${arr.length} alimentos encontrados (mostrando ${Math.min(arr.length,150)})`;
+
+    renderListaAlimentos(arr.slice(0,150));
+  }
+
+  // ... (TUDO IGUAL ATÉ bind)
+
+  function bind(){
+    el("dataDiario").value = hoje;
+
+    el("busca").addEventListener("input", aplicarFiltros);
+    el("ordenarPor").addEventListener("change", aplicarFiltros);
+
+    el("grupoSelect").addEventListener("change", async ()=>{
+      const val = el("grupoSelect").value;
+      if(val === "__manual__") return;
+      await carregarGrupoSelecionado();
+    });
+
+    // resto igual...
+  }
+
+  // ... (RESTO DO CÓDIGO EXATAMENTE IGUAL)
+
+})();
+</script>
