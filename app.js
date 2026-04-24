@@ -267,4 +267,15 @@ function abrirDetalhe(item) {
 }
 
 // 🔥 START
-carregarAlimentos();
+
+// 🔥 ESPERA O FIREBASE ESTAR PRONTO
+window.addEventListener("load", () => {
+  console.log("🔥 App iniciado");
+
+  if (!window.db) {
+    console.error("❌ Firebase NÃO carregou!");
+    return;
+  }
+
+  carregarAlimentos();
+});
