@@ -13,7 +13,7 @@ function corClassificacao(c){
 
 // 🔥 CARREGAR
 async function carregarAlimentos(){
-  const lista = document.getElementById("lista");
+const lista = document.getElementById("listaAlimentos");
   if(!lista) return;
 
   lista.innerHTML = "";
@@ -60,6 +60,8 @@ document.getElementById("btnImportar").addEventListener("click", async () => {
     const response = await fetch("base500.json");
     const dados = await response.json();
 
+    console.log("Importando...", dados.length);
+
     for (const item of dados) {
 
       const id = item.descricao_alimento
@@ -67,21 +69,17 @@ document.getElementById("btnImportar").addEventListener("click", async () => {
         .replace(/\s+/g,"_");
 
       await setDoc(doc(db, "alimentos", id), {
-
         nome: item.descricao_alimento,
         categoria: item.grupo,
 
         porcao: "100g",
 
         energia_kcal: item.energia_kcal || 0,
-
-        // 🔥 PADRÃO ÚNICO
         carboidrato: item.carboidrato_g || 0,
         proteina: item.proteina_g || 0,
         gordura: item.lipideos_g || 0,
 
         fibra: item.fibra_alimentar_g || 0,
-
         calcio: item.calcio_mg || 0,
         sodio: item.sodio_mg || 0,
         magnesio: item.magnesio_mg || 0,
@@ -89,13 +87,10 @@ document.getElementById("btnImportar").addEventListener("click", async () => {
         colesterol: item.colesterol_mg || 0,
 
         classificacao: "moderado"
-
       });
-
     }
 
-    alert("🔥 Banco recriado com sucesso!");
-
+    alert("Importação concluída!");
     carregarAlimentos();
 
   } catch (e) {
@@ -104,7 +99,6 @@ document.getElementById("btnImportar").addEventListener("click", async () => {
   }
 
 });
-
 
 
 
