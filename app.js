@@ -31,9 +31,9 @@ async function carregarAlimentos(){
         <td>${i.nome || "-"}</td>
         <td>${i.categoria || "-"}</td>
         <td>${i.energia_kcal ?? "-"}</td>
-        <td>${i.carboidrato ?? "-"}</td>
-        <td>${i.proteina ?? "-"}</td>
-        <td>${i.gordura ?? "-"}</td>
+	<td>${i.carboidrato ?? i.carboidrato_g ?? "-"}</td>
+	<td>${i.proteina ?? i.proteina_g ?? "-"}</td>
+	<td>${i.gordura ?? i.lipideos_g ?? "-"}</td>
         <td>${i.fibra ?? "-"}</td>
         <td>${i.colesterol ?? "-"}</td>
         <td>${i.calcio ?? "-"}</td>
