@@ -53,30 +53,58 @@ async function carregarAlimentos(){
 
 // 🔥 IMPORTAR BANCO (AGORA FUNCIONA)
 document.getElementById("btnImportar").addEventListener("click", async () => {
+
   try {
-    const snap = await getDocs(collection(db, "alimentos"));
+    const response = await fetch("base500.json"); // seu arquivo
+    const dados = await response.json();
 
-    const dados = [];
-    snap.forEach(docSnap => {
-      dados.push(docSnap.data());
-    });
+    console.log("🔥 Importando...", dados.length);
 
-    // 🔥 joga no sistema principal (HTML)
-    window.setBaseAtual(dados);
+    for (const item of dados) {
 
-    document.getElementById("statusBase").className = "status ok";
-    document.getElementById("statusBase").textContent =
-      "Banco carregado do Firebase com sucesso 🚀";
+      const id = (item.descricao_alimento || item.nome || "sem_nome")
+        .toLowerCase()
+        .replace(/\s+/g,"_");
+
+      await setDoc(doc(db, "alimentos", id), {
+
+        nome: item.descricao_alimento || item.nome || "",
+
+        categoria: item.grupo || item.categoria || "",
+
+        porcao: "100g",
+
+        energia_kcal: item.energia_kcal || 0,
+
+        // 🔥 AQUI É A CORREÇÃO
+        carboidrato: item.carboidrato_g || item.carboidrato || 0,
+        proteina: item.proteina_g || item.proteina || 0,
+        gordura: item.lipideos_g || item.gordura || 0,
+
+        fibra: item.fibra_alimentar_g || item.fibra || 0,
+
+        calcio: item.calcio_mg || item.calcio || 0,
+        sodio: item.sodio_mg || item.sodio || 0,
+        magnesio: item.magnesio_mg || item.magnesio || 0,
+
+        colesterol: item.colesterol_mg || item.colesterol || 0,
+
+        classificacao: "moderado"
+
+      });
+
+    }
+
+    alert("🔥 IMPORTAÇÃO CONCLUÍDA!");
+
+    carregarAlimentos(); // atualiza tela
 
   } catch (e) {
     console.error(e);
-
-    document.getElementById("statusBase").className = "status error";
-    document.getElementById("statusBase").textContent =
-      "Erro ao carregar banco ❌";
+    alert("Erro ao importar 😢");
   }
-});
 
+});
 // 🔥 START
 window.addEventListener("load", () => {
   console.log("🔥 App iniciado");
