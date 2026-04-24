@@ -1,20 +1,5 @@
-// 🔥 COLE AQUI SUA CONFIG DO FIREBASE
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyC9qmb14pgL6lb1ows_RYK_PAyiowocsq0",
-  authDomain: "receitas-da-lu-44637.firebaseapp.com",
-  projectId: "receitas-da-lu-44637",
-  storageBucket: "receitas-da-lu-44637.firebasestorage.app",
-  messagingSenderId: "860073650852",
-  appId: "1:860073650852:web:db47e9b82dfccc2e859431",
-  measurementId: "G-PPTQ4Y39FZ"
-};
-
-
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// 🔥 NÃO PRECISA MAIS inicializar Firebase aqui!
+// Ele já vem do HTML
 
 let idSelecionado = null;
 
@@ -26,16 +11,16 @@ function corClassificacao(c){
   return "gray";
 }
 
-// 🔥 CARREGAR (BLINDADO)
+// 🔥 CARREGAR
 async function carregarAlimentos(){
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
   try {
-    const snap = await db.collection("alimentos").get();
+    const snap = await getDocs(collection(db, "alimentos"));
 
-    snap.forEach(doc=>{
-      const i = doc.data() || {};
+    snap.forEach(docSnap=>{
+      const i = docSnap.data();
 
       const tr = document.createElement("tr");
 
@@ -55,7 +40,7 @@ async function carregarAlimentos(){
         <td>${i.porcao || "-"}</td>
       `;
 
-      tr.onclick = () => abrirDetalhe(item);
+      tr.onclick = () => abrirDetalhe(i);
 
       lista.appendChild(tr);
     });
@@ -66,7 +51,7 @@ async function carregarAlimentos(){
   }
 }
 
-// DETALHE
+// 🔥 DETALHE
 function mostrarDetalhe(i){
   document.getElementById("detNome").innerText = i.nome || "-";
 
@@ -87,7 +72,7 @@ function mostrarDetalhe(i){
   `;
 }
 
-// PEGAR FORM
+// 🔥 PEGAR FORM
 function pegarCampos(){
   return {
     nome: nome.value || "",
@@ -106,41 +91,32 @@ function pegarCampos(){
   };
 }
 
-// PREENCHER
-function preencherCampos(i){
-  nome.value = i.nome || "";
-  categoria.value = i.categoria || "";
-  porcao.value = i.porcao || "";
-  energia_kcal.value = i.energia_kcal || 0;
-  carboidrato.value = i.carboidrato || 0;
-  proteina.value = i.proteina || 0;
-  gordura.value = i.gordura || 0;
-  fibra.value = i.fibra || 0;
-  colesterol.value = i.colesterol || 0;
-  calcio.value = i.calcio || 0;
-  sodio.value = i.sodio || 0;
-  magnesio.value = i.magnesio || 0;
-}
+// 🔥 CRUD
 
-// CRUD
 async function incluir(){
   const d = pegarCampos();
   const id = d.nome.toLowerCase().replace(/\s+/g,"_");
-  await db.collection("alimentos").doc(id).set(d, { merge:true });
+
+  await setDoc(doc(db, "alimentos", id), d, { merge: true });
+
   limpar();
   carregarAlimentos();
 }
 
 async function alterar(){
   if(!idSelecionado) return alert("Selecione!");
-  await db.collection("alimentos").doc(idSelecionado).update(pegarCampos());
+
+  await updateDoc(doc(db, "alimentos", idSelecionado), pegarCampos());
+
   limpar();
   carregarAlimentos();
 }
 
 async function excluir(){
   if(!idSelecionado) return alert("Selecione!");
-  await db.collection("alimentos").doc(idSelecionado).delete();
+
+  await deleteDoc(doc(db, "alimentos", idSelecionado));
+
   limpar();
   carregarAlimentos();
 }
@@ -150,233 +126,33 @@ function limpar(){
   idSelecionado=null;
 }
 
-// BUSCAR (SEGURA)
+// 🔥 BUSCAR
 async function buscar(){
   const t = (busca.value || "").toLowerCase();
   const lista = document.getElementById("lista");
   lista.innerHTML="";
 
-  const snap = await db.collection("alimentos").get();
+  const snap = await getDocs(collection(db, "alimentos"));
 
-  snap.forEach(doc=>{
-    const i = doc.data() || {};
+  snap.forEach(docSnap=>{
+    const i = docSnap.data();
 
     if((i.nome || "").toLowerCase().includes(t)){
       const tr = document.createElement("tr");
+
       tr.innerHTML = `
-        <td></td>
-        <td>${i.nome || "-"}</td>
+        <td>${i.nome}</td>
         <td>${i.energia_kcal ?? "-"}</td>
       `;
+
       lista.appendChild(tr);
     }
   });
 }
 
-// IMPORTAR BASE
-async function importarBaseGrande(){
-  const r = await fetch("base500.json");
-  const dados = await r.json();
-
-  const chunk = 50;
-
-  for(let i=0;i<dados.length;i+=chunk){
-    const batch = db.batch();
-
-    dados.slice(i,i+chunk).forEach(item=>{
-      const id = item.nome.toLowerCase().replace(/\s+/g,"_");
-      const ref = db.collection("alimentos").doc(id);
-      batch.set(ref,item,{merge:true});
-    });
-
-    await batch.commit();
-  }
-
-  alert("Base importada!");
-  carregarAlimentos();
-}
-
-// LIMPAR BASE
-async function limparBase(){
-  if (!confirm("Apagar tudo?")) return;
-
-  const snap = await db.collection("alimentos").get();
-
-  let batch = db.batch();
-  let count = 0;
-
-  for (const doc of snap.docs) {
-    batch.delete(doc.ref);
-    count++;
-
-    if (count === 50) {
-      await batch.commit();
-      batch = db.batch();
-      count = 0;
-    }
-  }
-
-  if (count > 0) await batch.commit();
-
-  alert("Base limpa!");
-  carregarAlimentos();
-}
-
-
-async function importarBase(nomeArquivo){
-  try {
-
-    const response = await fetch(nomeArquivo);
-
-    if (!response.ok) {
-      alert("❌ Não encontrou o arquivo: " + nomeArquivo);
-      return;
-    }
-
-    const dados = await response.json();
-
-    for (let i = 0; i < dados.length; i += 50) {
-      const batch = db.batch();
-
-      dados.slice(i, i + 50).forEach(item => {
-        const id = (item.nome || "sem_nome")
-          .toLowerCase()
-          .replace(/\s+/g, "_");
-
-        const ref = db.collection("alimentos").doc(id);
-        batch.set(ref, item, { merge: true });
-      });
-
-      await batch.commit();
-    }
-
-    alert("✅ " + nomeArquivo + " importado!");
-    carregarAlimentos();
-
-  } catch (e) {
-    console.error(e);
-    alert("❌ Erro ao importar. Provável problema com arquivo JSON.");
-  }
-}
-
-
-
-
-async function normalizarBanco() {
-  try {
-    console.log("🔥 Iniciando normalização...");
-
-    const snapshot = await db.collection("alimentos").get();
-
-    if (snapshot.empty) {
-      alert("❌ Banco vazio!");
-      return;
-    }
-
-    for (let i = 0; i < snapshot.docs.length; i += 50) {
-      const batch = db.batch();
-
-      snapshot.docs.slice(i, i + 50).forEach(doc => {
-        const item = doc.data();
-
-        const modelo = {
-          nome: item.nome || "",
-          categoria: item.categoria || "",
-          porcao: item.porcao || "100g",
-
-          energia_kcal: item.energia_kcal || item.calorias || 0,
-          carboidrato: item.carboidrato || 0,
-          proteina: item.proteina || 0,
-          gordura: item.gordura || 0,
-          fibra: item.fibra || 0,
-
-          calcio: item.calcio || 0,
-          ferro: item.ferro || 0,
-          magnesio: item.magnesio || 0,
-          fosforo: item.fosforo || 0,
-          potassio: item.potassio || 0,
-          sodio: item.sodio || 0,
-          zinco: item.zinco || 0,
-
-          vitamina_a: item.vitamina_a || 0,
-          vitamina_c: item.vitamina_c || 0,
-          vitamina_d: item.vitamina_d || 0,
-          vitamina_e: item.vitamina_e || 0,
-          vitamina_k: item.vitamina_k || 0,
-          vitamina_b1: item.vitamina_b1 || 0,
-          vitamina_b2: item.vitamina_b2 || 0,
-          vitamina_b3: item.vitamina_b3 || 0,
-          vitamina_b6: item.vitamina_b6 || 0,
-          vitamina_b12: item.vitamina_b12 || 0,
-
-          colesterol: item.colesterol || 0,
-
-          classificacao: item.classificacao || "moderado"
-        };
-
-        batch.set(doc.ref, modelo, { merge: true });
-      });
-
-      await batch.commit();
-    }
-
-    console.log("✅ Finalizado!");
-    alert("🔥 Banco normalizado com sucesso!");
-
-    carregarAlimentos();
-
-  } catch (erro) {
-    console.error("ERRO:", erro);
-    alert("❌ Erro ao normalizar (veja o console)");
-  }
-}
-
-
-
-
-
-function mostrarDetalhe(item){
-  document.getElementById("detalhe").style.display = "block";
-
-  document.getElementById("d_nome").innerText = item.nome;
-
-  document.getElementById("d_kcal").innerText = item.energia_kcal || 0;
-
-  document.getElementById("d_carbo").innerText = item.carboidrato || 0;
-  document.getElementById("d_prot").innerText = item.proteina || 0;
-  document.getElementById("d_gord").innerText = item.gordura || 0;
-  document.getElementById("d_fibra").innerText = item.fibra || 0;
-
-  document.getElementById("d_va").innerText = item.vitamina_a || 0;
-  document.getElementById("d_vc").innerText = item.vitamina_c || 0;
-  document.getElementById("d_vb6").innerText = item.vitamina_b6 || 0;
-
-  document.getElementById("d_calc").innerText = item.calcio || 0;
-  document.getElementById("d_ferro").innerText = item.ferro || 0;
-  document.getElementById("d_pot").innerText = item.potassio || 0;
-
-  let cor = "black";
-  let texto = "MODERADO";
-
-  if(item.classificacao === "bom"){
-    cor = "green";
-    texto = "BOM 🟢";
-  }
-
-  if(item.classificacao === "evitar"){
-    cor = "red";
-    texto = "EVITAR 🔴";
-  }
-
-  document.getElementById("d_class").innerText = texto;
-  document.getElementById("d_class").style.color = cor;
-}
-
-
-
+// 🔥 CATEGORIA
 let categoriaAtual = "";
 
-// 🔥 abrir categoria
 function abrirCategoria(cat) {
   categoriaAtual = cat;
 
@@ -388,21 +164,19 @@ function abrirCategoria(cat) {
   carregarCategoria();
 }
 
-// 🔙 voltar
 function voltar() {
   document.getElementById("tela2").classList.remove("ativa");
   document.getElementById("tela1").classList.add("ativa");
 }
 
-// 🔎 carregar categoria
 async function carregarCategoria() {
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const snapshot = await db.collection("alimentos").get();
+  const snap = await getDocs(collection(db, "alimentos"));
 
-  snapshot.forEach(doc => {
-    const item = doc.data();
+  snap.forEach(docSnap => {
+    const item = docSnap.data();
 
     if (item.categoria === categoriaAtual) {
       const tr = document.createElement("tr");
@@ -420,16 +194,15 @@ async function carregarCategoria() {
   });
 }
 
-// 🔎 busca dentro da categoria
 async function buscarCategoria() {
   const texto = document.getElementById("busca").value.toLowerCase();
   const lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  const snapshot = await db.collection("alimentos").get();
+  const snap = await getDocs(collection(db, "alimentos"));
 
-  snapshot.forEach(doc => {
-    const item = doc.data();
+  snap.forEach(docSnap => {
+    const item = docSnap.data();
 
     if (
       item.categoria === categoriaAtual &&
@@ -450,14 +223,12 @@ async function buscarCategoria() {
   });
 }
 
-
+// 🔥 DETALHE FINAL
 function abrirDetalhe(item) {
 
-  // troca de tela
   document.getElementById("tela2").classList.remove("ativa");
   document.getElementById("tela3").classList.add("ativa");
 
-  // preencher dados
   document.getElementById("r_nome").innerText = item.nome;
   document.getElementById("r_porcao").innerText = item.porcao || "100g";
 
@@ -477,7 +248,6 @@ function abrirDetalhe(item) {
   document.getElementById("r_pot").innerText = item.potassio || 0;
   document.getElementById("r_sodio").innerText = item.sodio || 0;
 
-  // classificação
   let texto = "MODERADO 🟡";
   let cor = "orange";
 
@@ -496,15 +266,5 @@ function abrirDetalhe(item) {
   el.style.color = cor;
 }
 
-
-function voltarParaLista() {
-  document.getElementById("tela3").classList.remove("ativa");
-  document.getElementById("tela2").classList.add("ativa");
-}
-
-
-
-
-
-// START
+// 🔥 START
 carregarAlimentos();
