@@ -1014,8 +1014,25 @@
     await carregarManifesto();
   }
 
-  init();
+init();
+
+// 🔥 LIBERA PRO APP.JS
+window.setBaseAtual = (dados) => {
+  baseAtual = dados.map(a => ({
+    descricao_alimento: a.nome || "Sem nome",
+    grupo: a.categoria || "Firebase",
+    energia_kcal: a.energia_kcal || 0,
+    proteina_g: a.proteina || 0,
+    carboidrato_g: a.carboidrato || 0,
+    lipideos_g: a.gordura || 0
+  }));
+
+  aplicarFiltros();
+};
+
 })();
+
+
 </script>
 
 <script type="module">
