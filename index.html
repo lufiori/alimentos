@@ -1021,152 +1021,26 @@
 </script>
 
 <script type="module">
-  // 🔥 Firebase moderno
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getFirestore,
-    collection,
-    getDocs,
-    doc,
-    setDoc,
-    updateDoc,
-    deleteDoc
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getFirestore, collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // 🔥 SUA CONFIG (já coloquei a sua)
   const firebaseConfig = {
     apiKey: "AIzaSyC9qmb14pgL6lb1ows_RYK_PAyiowocsq0",
     authDomain: "receitas-da-lu-44637.firebaseapp.com",
-    projectId: "receitas-da-lu-44637",
-    storageBucket: "receitas-da-lu-44637.firebasestorage.app",
-    messagingSenderId: "860073650852",
-    appId: "1:860073650852:web:db47e9b82dfccc2e859431"
+    projectId: "receitas-da-lu-44637"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // 🔥 VAR GLOBAL
-  let idSelecionado = null;
-
-  function corClassificacao(c){
-    if(c==="bom") return "green";
-    if(c==="moderado") return "orange";
-    if(c==="evitar") return "red";
-    return "gray";
-  }
-
-  // 🔥 CARREGAR
-  async function carregarAlimentos(){
-    const lista = document.getElementById("lista");
-    lista.innerHTML = "";
-
-    const snap = await getDocs(collection(db, "alimentos"));
-
-    snap.forEach(docSnap=>{
-      const i = docSnap.data();
-
-      const tr = document.createElement("tr");
-
-      tr.innerHTML = `
-        <td><span style="background:${corClassificacao(i.classificacao)};width:10px;height:10px;display:inline-block;border-radius:50%"></span></td>
-        <td>${i.nome || "-"}</td>
-        <td>${i.categoria || "-"}</td>
-        <td>${i.energia_kcal ?? "-"}</td>
-      `;
-
-      tr.onclick = () => abrirDetalhe(i);
-
-      lista.appendChild(tr);
-    });
-  }
-
-  // 🔥 DETALHE
-  function abrirDetalhe(item){
-    document.getElementById("r_nome").innerText = item.nome;
-    document.getElementById("r_kcal").innerText = item.energia_kcal || 0;
-  }
-
-  // 🔥 PEGAR FORM
-  function pegarCampos(){
-    return {
-      nome: nome.value || "",
-      categoria: categoria.value || "",
-      porcao: porcao.value || "100g",
-      energia_kcal: Number(energia_kcal.value) || 0,
-      carboidrato: Number(carboidrato.value) || 0,
-      proteina: Number(proteina.value) || 0,
-      gordura: Number(gordura.value) || 0,
-      fibra: Number(fibra.value) || 0,
-      colesterol: Number(colesterol.value) || 0,
-      calcio: Number(calcio.value) || 0,
-      sodio: Number(sodio.value) || 0,
-      magnesio: Number(magnesio.value) || 0,
-      classificacao: classificacao.value || "moderado"
-    };
-  }
-
-  // 🔥 INCLUIR
-  async function incluir(){
-    const d = pegarCampos();
-    const id = d.nome.toLowerCase().replace(/\s+/g,"_");
-
-    await setDoc(doc(db, "alimentos", id), d, { merge: true });
-
-    carregarAlimentos();
-  }
-
-  // 🔥 ALTERAR
-  async function alterar(){
-    if(!idSelecionado) return alert("Selecione!");
-
-    await updateDoc(doc(db, "alimentos", idSelecionado), pegarCampos());
-
-    carregarAlimentos();
-  }
-
-  // 🔥 EXCLUIR
-  async function excluir(){
-    if(!idSelecionado) return alert("Selecione!");
-
-    await deleteDoc(doc(db, "alimentos", idSelecionado));
-
-    carregarAlimentos();
-  }
-
-  // 🔥 BUSCAR
-  async function buscar(){
-    const t = (busca.value || "").toLowerCase();
-    const lista = document.getElementById("lista");
-    lista.innerHTML = "";
-
-    const snap = await getDocs(collection(db, "alimentos"));
-
-    snap.forEach(docSnap=>{
-      const i = docSnap.data();
-
-      if((i.nome || "").toLowerCase().includes(t)){
-        const tr = document.createElement("tr");
-
-        tr.innerHTML = `
-          <td>${i.nome}</td>
-          <td>${i.energia_kcal ?? "-"}</td>
-        `;
-
-        lista.appendChild(tr);
-      }
-    });
-  }
-
-  // 🔥 START AUTOMÁTICO
-  carregarAlimentos();
-
-  // 🔥 EXPOR FUNÇÕES PRO HTML
-  window.incluir = incluir;
-  window.alterar = alterar;
-  window.excluir = excluir;
-  window.buscar = buscar;
-
+  // 🔥 joga tudo pro escopo global
+  window.db = db;
+  window.collection = collection;
+  window.getDocs = getDocs;
+  window.doc = doc;
+  window.setDoc = setDoc;
+  window.updateDoc = updateDoc;
+  window.deleteDoc = deleteDoc;
 </script>
 
 <script src="app.js"></script>
