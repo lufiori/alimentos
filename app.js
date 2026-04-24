@@ -3,6 +3,11 @@
 
 let idSelecionado = null;
 
+async function importarBase(nomeArquivo){
+  console.log("🔥 clicou importar");
+
+  try {
+
 // cor bolinha
 function corClassificacao(c){
   if(c==="bom") return "green";
@@ -280,12 +285,4 @@ window.addEventListener("load", () => {
   carregarAlimentos();
 });
 
-window.carregarAlimentos = carregarAlimentos;
-window.incluir = incluir;
-window.alterar = alterar;
-window.excluir = excluir;
-window.buscar = buscar;
-window.abrirCategoria = abrirCategoria;
-window.voltar = voltar;
-window.buscarCategoria = buscarCategoria;
-window.voltarParaLista = voltarParaLista;
+window.importarBase = importarBase;
