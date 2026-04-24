@@ -51,43 +51,42 @@ async function carregarAlimentos(){
   }
 }
 
-// 🔥 IMPORTAR BANCO (AGORA FUNCIONA)
+
+
+// 🔥 IMPORTAR BANCO 
 document.getElementById("btnImportar").addEventListener("click", async () => {
 
   try {
-    const response = await fetch("base500.json"); // seu arquivo
+    const response = await fetch("base500.json");
     const dados = await response.json();
-
-    console.log("🔥 Importando...", dados.length);
 
     for (const item of dados) {
 
-      const id = (item.descricao_alimento || item.nome || "sem_nome")
+      const id = item.descricao_alimento
         .toLowerCase()
         .replace(/\s+/g,"_");
 
       await setDoc(doc(db, "alimentos", id), {
 
-        nome: item.descricao_alimento || item.nome || "",
-
-        categoria: item.grupo || item.categoria || "",
+        nome: item.descricao_alimento,
+        categoria: item.grupo,
 
         porcao: "100g",
 
         energia_kcal: item.energia_kcal || 0,
 
-        // 🔥 AQUI É A CORREÇÃO
-        carboidrato: item.carboidrato_g || item.carboidrato || 0,
-        proteina: item.proteina_g || item.proteina || 0,
-        gordura: item.lipideos_g || item.gordura || 0,
+        // 🔥 PADRÃO ÚNICO
+        carboidrato: item.carboidrato_g || 0,
+        proteina: item.proteina_g || 0,
+        gordura: item.lipideos_g || 0,
 
-        fibra: item.fibra_alimentar_g || item.fibra || 0,
+        fibra: item.fibra_alimentar_g || 0,
 
-        calcio: item.calcio_mg || item.calcio || 0,
-        sodio: item.sodio_mg || item.sodio || 0,
-        magnesio: item.magnesio_mg || item.magnesio || 0,
+        calcio: item.calcio_mg || 0,
+        sodio: item.sodio_mg || 0,
+        magnesio: item.magnesio_mg || 0,
 
-        colesterol: item.colesterol_mg || item.colesterol || 0,
+        colesterol: item.colesterol_mg || 0,
 
         classificacao: "moderado"
 
@@ -95,9 +94,9 @@ document.getElementById("btnImportar").addEventListener("click", async () => {
 
     }
 
-    alert("🔥 IMPORTAÇÃO CONCLUÍDA!");
+    alert("🔥 Banco recriado com sucesso!");
 
-    carregarAlimentos(); // atualiza tela
+    carregarAlimentos();
 
   } catch (e) {
     console.error(e);
@@ -105,6 +104,10 @@ document.getElementById("btnImportar").addEventListener("click", async () => {
   }
 
 });
+
+
+
+
 // 🔥 START
 window.addEventListener("load", () => {
   console.log("🔥 App iniciado");
