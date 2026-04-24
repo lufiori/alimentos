@@ -3,10 +3,7 @@
 
 let idSelecionado = null;
 
-async function importarBase(base500.json){
-  console.log("🔥 clicou importar");
 
-  try {
 
 // cor bolinha
 function corClassificacao(c){
@@ -285,4 +282,6 @@ window.addEventListener("load", () => {
   carregarAlimentos();
 });
 
-window.importarBase = importarBase;
+document.getElementById("btnImportar").addEventListener("click", () => {
+  importarBase("base500.json");
+});
