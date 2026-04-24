@@ -3,7 +3,7 @@
 
 let idSelecionado = null;
 
-async function importarBase(nomeArquivo){
+async function importarBase(base500.json){
   console.log("🔥 clicou importar");
 
   try {
